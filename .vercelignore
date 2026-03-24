@@ -1,0 +1,14 @@
+.git
+.gitignore
+node_modules
+npm-debug.log
+.angular
+.vscode
+.DS_Store
+karma.conf.js
+tsconfig.spec.json
+test
+*.spec.ts
+mock-server
+proxy.conf.json
+src/assets/i18n/*.json

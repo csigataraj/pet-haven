@@ -1,4 +1,6 @@
-# AngularPet1
+# Pet Haven
+
+A modern, feature-rich pet supplies e-commerce application built with Angular 19. Browse and purchase premium pet products with intelligent filtering, multi-language support, and seamless checkout.
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.1.
 
