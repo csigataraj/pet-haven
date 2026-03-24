@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +14,7 @@ import { EmptyStateComponent, PageHeaderComponent, PriceComponent, ProfileMenuCo
   selector: 'app-product-details',
   imports: [
     RouterLink,
+    DatePipe,
     ProfileMenuComponent,
     PageHeaderComponent,
     PriceComponent,
@@ -84,6 +86,27 @@ export class ProductDetailsComponent {
     }
     const total = entries.reduce((sum, review) => sum + review.rating, 0);
     return total / entries.length;
+  });
+
+  readonly discountExpirationDate = computed(() => {
+    const item = this.product();
+    if (!item || !item.discountedPrice) {
+      return null;
+    }
+    const date = new Date();
+    date.setDate(date.getDate() + 7);
+    return date;
+  });
+
+  readonly discountExpirationDateFormatted = computed(() => {
+    const date = this.discountExpirationDate();
+    if (!date) {
+      return '';
+    }
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
   });
 
   readonly isWishlisted = computed(() => {

@@ -22,7 +22,17 @@
         </div>
         <div class="stat">
           <p class="label">{{ 'shop.productDetails.price' | translate }}</p>
-          <p class="value"><app-price [value]="item.price" /></p>
+          @if (item.discountedPrice) {
+            <div class="stat-price-section">
+              <p class="value original-price"><app-price [value]="item.price" /></p>
+              <p class="value discounted-price"><app-price [value]="item.discountedPrice" /></p>
+            </div>
+            @if (discountExpirationDateFormatted(); as expDate) {
+              <p class="discount-notice">{{ 'shop.productDetails.discountExpires' | translate:{ date: expDate } }}</p>
+            }
+          } @else {
+            <p class="value"><app-price [value]="item.price" /></p>
+          }
         </div>
         <div class="stat">
           <p class="label">{{ 'shop.productDetails.stock' | translate }}</p>

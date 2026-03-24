@@ -16,9 +16,9 @@
 
 .shop-shell {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  grid-template-rows: auto 1fr;
-  min-height: calc(100dvh - 2rem);
+  grid-template-columns: 260px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  height: calc(100dvh - 2rem);
   border-radius: 28px;
   overflow: hidden;
   background: linear-gradient(120deg, #fefcf2 0%, #f5f0dc 50%, #f7f3e6 100%);
@@ -26,29 +26,27 @@
 }
 
 .shop-content {
-  background: radial-gradient(circle at top left, var(--nav-junction-tone) 0 var(--junction-radius), transparent var(--junction-radius));
-  overflow: auto;
+  background: #122f42;
+  overflow: hidden;
+  display: flex;
+  min-height: 0;
 }
 
 .shop-aside {
   display: grid;
   align-content: start;
   gap: 0.8rem;
-  padding: 0.3rem 1rem 1.2rem;
+  padding: 0.3rem 1rem 3rem;
   position: relative;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   min-width: 0;
+  min-height: 0;
+  scrollbar-width: none;
 }
 
-.shop-aside::after {
-  content: '';
-  position: absolute;
-  top: var(--junction-radius);
-  right: 0;
-  bottom: 0;
-  width: 1px;
-  background: #ddcfaa;
-  pointer-events: none;
+.shop-aside::-webkit-scrollbar {
+  display: none;
 }
 
 .brand-title {
@@ -72,6 +70,9 @@
   display: grid;
   gap: 0.25rem;
   min-width: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .search-box {
@@ -126,16 +127,6 @@
   border-radius: 0 20px 20px 0;
 }
 
-.sort-label {
-  margin: 0;
-  margin-top: 4px;
-  color: #ffffff;
-  font-size: 1.10rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  padding-left: 0.4rem;
-}
-
 .actions {
   display: flex;
   align-items: center;
@@ -143,19 +134,23 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-.sort-control {
-  max-width: 210px;
-}
-
 :host ::ng-deep .sort-control .mat-mdc-form-field-infix {
-  min-height: 40px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  min-height: 28px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 :host ::ng-deep .sort-control .mat-mdc-select-value-text,
 :host ::ng-deep .sort-control .mat-mdc-select-placeholder {
   font-size: 0.9rem;
+}
+
+:host ::ng-deep .sort-control .mdc-notched-outline__leading {
+  border-radius: 999px 0 0 999px;
+}
+
+:host ::ng-deep .sort-control .mdc-notched-outline__trailing {
+  border-radius: 0 999px 999px 0;
 }
 
 .cart-action {
@@ -183,40 +178,72 @@
 }
 
 button,
-.card-action {
+{
   font: inherit;
   cursor: pointer;
 }
 
-.filter-chip,
-.card-action {
-  border-radius: 999px;
-  border: 1px solid transparent;
-  padding: 0.58rem 1rem;
+.aside-filters {
+  margin-top: 0.4rem;
+  display: grid;
+  gap: 0.6rem;
+  min-width: 0;
 }
 
-.aside-filters {
-  margin-top: 0.8rem;
+.filter-group {
   display: grid;
-  gap: 0.55rem;
-  min-width: 0;
+  gap: 0.25rem;
+}
+
+.filter-group-title {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #c9dce6;
+  font-weight: 700;
+}
+
+.filter-group-options {
+  display: grid;
+  gap: 0.2rem;
+  padding-left: 0.15rem;
 }
 
 .shop-main {
   background: radial-gradient(circle at 0 0, #fffdf6 0%, #f8f4e7 60%);
   border-top-left-radius: var(--junction-radius);
   overflow: hidden;
-  display: grid;
-  align-content: start;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
   padding: 1.2rem 1.4rem 1.5rem;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
-.hero-panel {
-  background: linear-gradient(115deg, #122f42 0%, #1f4f62 65%, #327a79 100%);
-  color: #f4f7f9;
-  border-radius: 20px;
-  padding: 1.2rem;
+.sort-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.8rem;
+  justify-content: flex-end;
+  margin-top: calc(-1rem + 4px);
+  margin-bottom: calc(-1rem + 4px);
+}
+
+.sort-control {
+  width: 200px;
+  align-self: center;
+  margin-bottom: -1.25em;
+}
+
+.sort-label {
+  font-size: 0.9rem;
+  color: #5a7381;
+  margin: 0;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .hero-kicker {
@@ -225,6 +252,13 @@ button,
   letter-spacing: 0.12em;
   font-size: 0.72rem;
   color: #ffdb9f;
+}
+
+.hero-panel {
+  background: linear-gradient(115deg, #122f42 0%, #1f4f62 65%, #327a79 100%);
+  color: #f4f7f9;
+  border-radius: 20px;
+  padding: 1.2rem;
 }
 
 .hero-panel h2 {
@@ -242,7 +276,7 @@ button,
 .category-checkbox {
   width: 100%;
   justify-content: flex-start;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
 }
 
 :host ::ng-deep .category-checkbox .mdc-checkbox {
@@ -274,43 +308,16 @@ button,
   color: var(--ink-700) !important;
 }
 
-.stock-toggle {
-  margin-left: 0.35rem;
-}
-
-:host ::ng-deep .stock-toggle .mdc-checkbox {
-  color: #ffffff !important;
-}
-
-:host ::ng-deep .stock-toggle .mdc-form-field > label {
-  color: #ffffff !important;
-}
-
-:host ::ng-deep .stock-toggle {
-  color: #ffffff !important;
-}
-
-:host ::ng-deep .stock-toggle .mat-mdc-checkbox-label {
-  color: #ffffff !important;
-}
-
-:host ::ng-deep .stock-toggle .mdc-checkbox__native-control {
-  border-color: #ffffff !important;
-}
-
-:host ::ng-deep .stock-toggle .mdc-checkbox__background {
-  background-color: #ffffff !important;
-  border-color: #ffffff !important;
-}
-
-:host ::ng-deep .stock-toggle .mdc-checkbox__checkmark {
-  color: var(--ink-700) !important;
-}
-
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-auto-rows: max-content;
   gap: 0.85rem;
+  align-content: start;
+  flex: 1 1 auto;
+  overflow: auto;
+  min-height: 0;
+  padding-right: 0.25rem;
 }
 
 .product-card {
@@ -322,6 +329,23 @@ button,
   display: grid;
   gap: 0.55rem;
   position: relative;
+  overflow: hidden;
+}
+
+.new-ribbon {
+  position: absolute;
+  top: 10px;
+  right: -28px;
+  background: linear-gradient(135deg, #2e9e6b, #1e7a52);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 3px 34px;
+  transform: rotate(45deg);
+  transform-origin: center;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(30, 122, 82, 0.35);
 }
 
 .thumb-link {
@@ -360,6 +384,24 @@ button,
   font-size: 1.15rem;
   color: #214f5d;
   font-weight: 700;
+}
+
+.price-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #8a939e;
+  font-size: 0.95rem;
+}
+
+.discounted-price {
+  color: #38a169;
+  font-weight: 700;
+  font-size: 1.25rem;
 }
 
 .card-wishlist,
@@ -524,7 +566,7 @@ button,
   }
 
   .shop-shell {
-    min-height: calc(100dvh - 1rem);
+    height: calc(100dvh - 1rem);
   }
 
   .shop-nav {

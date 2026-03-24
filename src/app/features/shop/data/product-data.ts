@@ -7,15 +7,18 @@ export interface Product {
   category: string;
   description: string;
   highlights: string[];
+  isNew?: boolean;
+  discountedPrice?: number;
 }
 
-export type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'name-asc' | 'stock-desc';
+export type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' | 'stock-desc';
 
 export const SORT_OPTIONS: { labelKey: string; value: SortOption }[] = [
   { labelKey: 'shop.sortOptions.featured', value: 'featured' },
   { labelKey: 'shop.sortOptions.priceAsc', value: 'price-asc' },
   { labelKey: 'shop.sortOptions.priceDesc', value: 'price-desc' },
   { labelKey: 'shop.sortOptions.nameAsc', value: 'name-asc' },
+  { labelKey: 'shop.sortOptions.nameDesc', value: 'name-desc' },
   { labelKey: 'shop.sortOptions.stockDesc', value: 'stock-desc' }
 ];
 
@@ -25,6 +28,7 @@ export const PRODUCTS: Product[] = [
     sku: 'PET-001',
     imageUrl: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80',
     price: 89,
+    discountedPrice: 69,
     stock: 23,
     category: 'Sleep',
     description: 'Orthopedic pet bed with washable cover and memory-foam core.',
@@ -65,6 +69,7 @@ export const PRODUCTS: Product[] = [
     sku: 'PET-041',
     imageUrl: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=900&q=80',
     price: 49,
+    discountedPrice: 39,
     stock: 0,
     category: 'Grooming',
     description: 'Essential grooming set including brush, comb, and nail trimmer.',
@@ -85,6 +90,7 @@ export const PRODUCTS: Product[] = [
     sku: 'PET-101',
     imageUrl: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80',
     price: 42,
+    discountedPrice: 32,
     stock: 67,
     category: 'Sleep',
     description: 'Pressure-activated cooling mat for warmer days and recovery naps.',
@@ -165,6 +171,7 @@ export const PRODUCTS: Product[] = [
     sku: 'PET-109',
     imageUrl: 'https://images.unsplash.com/photo-1551730459-92db2a308d6a?auto=format&fit=crop&w=900&q=80',
     price: 59,
+    discountedPrice: 45,
     stock: 26,
     category: 'Feeding',
     description: 'Quiet recirculating fountain with multi-stage filtration.',
@@ -335,6 +342,7 @@ export const PRODUCTS: Product[] = [
     sku: 'PET-126',
     imageUrl: 'https://images.unsplash.com/photo-1551730459-92db2a308d6a?auto=format&fit=crop&w=900&q=80',
     price: 74,
+    discountedPrice: 55,
     stock: 20,
     category: 'Travel',
     description: 'Ventilated backpack carrier for city outings and transit.',
@@ -505,10 +513,12 @@ export const PRODUCTS: Product[] = [
     sku: 'PET-143',
     imageUrl: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=900&q=80',
     price: 29,
+    discountedPrice: 22,
     stock: 66,
     category: 'Health',
     description: 'Digestive support chews with live cultures.',
-    highlights: ['Chicken flavor', '60 chews', 'Daily support']
+    highlights: ['Chicken flavor', '60 chews', 'Daily support'],
+    isNew: true
   },
   {
     name: 'Calming Aid Drops',
@@ -518,7 +528,8 @@ export const PRODUCTS: Product[] = [
     stock: 39,
     category: 'Health',
     description: 'Herbal blend to help with travel and storm anxiety.',
-    highlights: ['Measured dropper', 'Alcohol free', 'Fast-acting formula']
+    highlights: ['Measured dropper', 'Alcohol free', 'Fast-acting formula'],
+    isNew: true
   },
   {
     name: 'Reflective Rain Leash',
@@ -528,17 +539,20 @@ export const PRODUCTS: Product[] = [
     stock: 58,
     category: 'Walking',
     description: 'Water-resistant leash for wet weather walks.',
-    highlights: ['Quick-dry webbing', 'Traffic handle', 'Rustproof hardware']
+    highlights: ['Quick-dry webbing', 'Traffic handle', 'Rustproof hardware'],
+    isNew: true
   },
   {
     name: 'Pet Stroller Lite',
     sku: 'PET-146',
     imageUrl: 'https://images.unsplash.com/photo-1551730459-92db2a308d6a?auto=format&fit=crop&w=900&q=80',
     price: 139,
+    discountedPrice: 109,
     stock: 7,
     category: 'Travel',
     description: 'Foldable stroller for small pets and senior companions.',
-    highlights: ['One-hand fold', 'Storage basket', 'Locking front wheels']
+    highlights: ['One-hand fold', 'Storage basket', 'Locking front wheels'],
+    isNew: true
   },
   {
     name: 'Weekend Road Trip Kit',
@@ -548,7 +562,8 @@ export const PRODUCTS: Product[] = [
     stock: 22,
     category: 'Travel',
     description: 'Grab-and-go travel set with bowls, mat, and organizer.',
-    highlights: ['Insulated pouch', 'Roll-up mat', 'Portable bowls']
+    highlights: ['Insulated pouch', 'Roll-up mat', 'Portable bowls'],
+    isNew: true
   },
   {
     name: 'Window Perch Hammock',
@@ -558,17 +573,20 @@ export const PRODUCTS: Product[] = [
     stock: 41,
     category: 'Sleep',
     description: 'Sun-bathing perch with reinforced suction support.',
-    highlights: ['Breathable mesh', 'Tool-free install', 'Easy clean cover']
+    highlights: ['Breathable mesh', 'Tool-free install', 'Easy clean cover'],
+    isNew: true
   },
   {
     name: 'Orthopedic Sofa Bed',
     sku: 'PET-149',
     imageUrl: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80',
     price: 118,
+    discountedPrice: 89,
     stock: 12,
     category: 'Sleep',
     description: 'Bolstered orthopedic bed for larger breeds and seniors.',
-    highlights: ['High-density foam', 'Waterproof liner', 'Removable cover']
+    highlights: ['High-density foam', 'Waterproof liner', 'Removable cover'],
+    isNew: true
   },
   {
     name: 'Interactive Laser Spinner',
@@ -578,6 +596,7 @@ export const PRODUCTS: Product[] = [
     stock: 35,
     category: 'Toys',
     description: 'Automatic laser toy with randomized movement patterns.',
-    highlights: ['Auto shutoff', 'USB rechargeable', 'Silent motor']
+    highlights: ['Auto shutoff', 'USB rechargeable', 'Silent motor'],
+    isNew: true
   }
 ];

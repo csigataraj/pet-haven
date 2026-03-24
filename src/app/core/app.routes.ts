@@ -49,6 +49,11 @@ export const routes: Routes = [
 			import('../features/shop/pages/terms/terms.component').then((m) => m.TermsComponent)
 	},
 	{
+		path: 'contact',
+		loadComponent: () =>
+			import('../features/shop/pages/contact/contact.component').then((m) => m.ContactComponent)
+	},
+	{
 		path: 'profile',
 		canActivate: [authGuard],
 		loadComponent: () =>

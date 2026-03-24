@@ -3,7 +3,7 @@ import { Product, SortOption } from './product-data';
 export interface ProductQueryOptions {
   query: string;
   category?: string | null;
-  inStockOnly: boolean;
+  inStockOnly?: boolean;
   sort: SortOption;
   includeCategoryInSearch?: boolean;
 }
@@ -44,6 +44,9 @@ export function filterAndSortProducts(products: Product[], options: ProductQuery
     }
     if (options.sort === 'name-asc') {
       return a.name.localeCompare(b.name);
+    }
+    if (options.sort === 'name-desc') {
+      return b.name.localeCompare(a.name);
     }
     return b.stock - a.stock;
   });

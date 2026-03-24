@@ -30,6 +30,11 @@ import { SORT_OPTIONS, SortOption, filterAndSortProducts, getProductCategories }
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  private static readonly NEWEST_FILTER = 'Newest';
+  private static readonly CARE_CATEGORIES = ['Sleep', 'Grooming', 'Health'] as const;
+  private static readonly FOOD_CATEGORIES = ['Food', 'Feeding'] as const;
+  private static readonly PLAY_AND_TRAVEL_CATEGORIES = ['Toys', 'Walking', 'Travel', 'Training'] as const;
+
   private readonly productCatalog = inject(ProductCatalogService);
   private readonly cartService = inject(CartService);
   private readonly translateService = inject(TranslateService);
@@ -46,22 +51,53 @@ export class HomeComponent {
 
   readonly selectedCategories = signal(new Set<string>());
   readonly searchTerm = signal('');
-  readonly inStockOnly = signal(false);
   readonly sortBy = signal<SortOption>('featured');
   readonly showWishlistAuthModal = signal(false);
 
   readonly categories = computed(() => getProductCategories(this.products(), false));
+  readonly filterGroups = computed(() => {
+    const categories = this.categories();
+
+    const selectInOrder = (orderedCategories: readonly string[]) =>
+      orderedCategories.filter((category) => categories.includes(category));
+
+    const care = selectInOrder(HomeComponent.CARE_CATEGORIES);
+    const food = selectInOrder(HomeComponent.FOOD_CATEGORIES);
+    const playAndTravel = selectInOrder(HomeComponent.PLAY_AND_TRAVEL_CATEGORIES);
+    const mapped = new Set([...care, ...food, ...playAndTravel]);
+    const moreCategories = categories.filter((category) => !mapped.has(category));
+
+    return [
+      { labelKey: 'shop.home.filterGroups.newAndTrending', options: [HomeComponent.NEWEST_FILTER] },
+      { labelKey: 'shop.home.filterGroups.careAndWellness', options: care },
+      { labelKey: 'shop.home.filterGroups.foodAndFeeding', options: food },
+      { labelKey: 'shop.home.filterGroups.playAndTravel', options: playAndTravel },
+      { labelKey: 'shop.home.filterGroups.moreCategories', options: moreCategories }
+    ].filter((group) => group.options.length > 0);
+  });
 
   readonly productCards = computed(() => {
-    const selected = this.selectedCategories();
-    const categoryToFilterBy = selected.size === 0 ? null : Array.from(selected)[0];
+    const selectedOptions = this.selectedCategories();
+    const newestSelected = selectedOptions.has(HomeComponent.NEWEST_FILTER);
+    const selectedCategoryFilters = [...selectedOptions].filter((option) => option !== HomeComponent.NEWEST_FILTER);
 
-    return filterAndSortProducts(this.products(), {
+    const sortedProducts = filterAndSortProducts(this.products(), {
       query: this.searchTerm(),
-      category: categoryToFilterBy,
-      inStockOnly: this.inStockOnly(),
+      category: null,
       sort: this.sortBy(),
       includeCategoryInSearch: true
+    });
+
+    return sortedProducts.filter((product) => {
+      if (selectedCategoryFilters.length > 0 && !selectedCategoryFilters.includes(product.category)) {
+        return false;
+      }
+
+      if (newestSelected && !product.isNew) {
+        return false;
+      }
+
+      return true;
     });
   });
 
@@ -72,7 +108,6 @@ export class HomeComponent {
   setCategory(category: string, checked: boolean): void {
     const updated = new Set(this.selectedCategories());
     if (checked) {
-      updated.clear();
       updated.add(category);
     } else {
       updated.delete(category);
@@ -86,10 +121,6 @@ export class HomeComponent {
 
   setSort(value: string): void {
     this.sortBy.set(value as SortOption);
-  }
-
-  toggleInStockOnly(enabled: boolean): void {
-    this.inStockOnly.set(enabled);
   }
 
   onWishlistClick(sku: string): void {

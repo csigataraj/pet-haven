@@ -1,0 +1,70 @@
+@use '../../../../shared/styles/page-shell-shared';
+@use '../../../../shared/styles/theme-shared' as theme;
+
+.contact-card {
+  @include theme.surface-card(16px, 1.5rem);
+  max-width: 600px;
+}
+
+.contact-card h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  color: #122f42;
+}
+
+.intro-text {
+  margin: 0 0 1.5rem 0;
+  color: #5a7381;
+  line-height: 1.6;
+}
+
+.contact-form {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.message-field {
+  grid-column: 1 / -1;
+}
+
+.submit-btn {
+  @include theme.primary-pill-button(0.72rem 1.4rem);
+  width: fit-content;
+  align-self: start;
+  margin-top: 0.5rem;
+}
+
+.contact-info {
+  padding-top: 1.5rem;
+  border-top: 1px solid #e1d5b5;
+}
+
+.contact-info h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #122f42;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.8rem 0;
+  color: #5a7381;
+  font-size: 0.95rem;
+}
+
+.info-item mat-icon {
+  flex-shrink: 0;
+  color: #1f4f62;
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+  line-height: 24px;
+}

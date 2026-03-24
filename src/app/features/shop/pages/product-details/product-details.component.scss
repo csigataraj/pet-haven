@@ -76,6 +76,33 @@ app-page-header {
   font-weight: 700;
 }
 
+.stat-price-section {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #8a939e;
+  font-size: 0.95rem;
+}
+
+.discounted-price {
+  color: #38a169;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.discount-notice {
+  margin: 0;
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  color: #38a169;
+  font-weight: 600;
+}
+
 .highlights h2 {
   margin: 0 0 0.5rem;
   color: #163447;

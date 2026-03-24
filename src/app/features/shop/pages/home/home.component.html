@@ -32,31 +32,25 @@
           />
         </mat-form-field>
       </div>
-
-      <p class="sort-label">{{ 'shop.home.sortBy' | translate }}</p>
-      <mat-form-field appearance="outline" class="material-field sort-control">
-        <mat-select [value]="sortBy()" (selectionChange)="setSort($any($event.value))">
-          @for (option of sortOptions; track option.value) {
-            <mat-option [value]="option.value">{{ option.labelKey | translate }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
     </section>
 
     <section class="aside-filters" aria-label="Category filters">
-      @for (category of categories(); track category) {
-        <mat-checkbox
-          class="category-checkbox"
-          [checked]="isCategorySelected(category)"
-          (change)="setCategory(category, $event.checked)"
-        >
-          {{ categoryLabel(category) }}
-        </mat-checkbox>
+      @for (group of filterGroups(); track group.labelKey) {
+        <section class="filter-group">
+          <h3 class="filter-group-title">{{ group.labelKey | translate }}</h3>
+          <div class="filter-group-options">
+            @for (category of group.options; track category) {
+              <mat-checkbox
+                class="category-checkbox"
+                [checked]="isCategorySelected(category)"
+                (change)="setCategory(category, $event.checked)"
+              >
+                {{ categoryLabel(category) }}
+              </mat-checkbox>
+            }
+          </div>
+        </section>
       }
-
-      <mat-checkbox class="stock-toggle" [checked]="inStockOnly()" (change)="toggleInStockOnly($event.checked)">
-        {{ 'shop.home.stockToggle' | translate }}
-      </mat-checkbox>
     </section>
 
   </aside>
@@ -69,14 +63,35 @@
         <p>{{ 'shop.home.collectionDescription' | translate }}</p>
       </section>
 
+      <div class="sort-toolbar">
+        <span class="sort-label">{{ 'shop.home.sortBy' | translate }}</span>
+        <mat-form-field appearance="outline" class="material-field sort-control">
+          <mat-select [value]="sortBy()" (selectionChange)="setSort($any($event.value))">
+            @for (option of sortOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.labelKey | translate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <section class="cards-grid" aria-label="Product cards">
         @for (product of productCards(); track product.sku) {
           <article class="product-card">
             <a class="thumb-link" [routerLink]="['/products', product.sku]" [attr.aria-label]="'shop.home.viewDetails' | translate">
               <img class="thumb" [src]="product.imageUrl" [alt]="product.name" loading="lazy" />
             </a>
+            @if (product.isNew) {
+              <span class="new-ribbon" aria-label="New product">{{ 'shop.home.newBadge' | translate }}</span>
+            }
             <h3><a class="name-link" [routerLink]="['/products', product.sku]">{{ product.name }}</a></h3>
-            <p class="price"><app-price [value]="product.price" /></p>
+            <div class="price-section">
+              @if (product.discountedPrice) {
+                <p class="price original-price"><app-price [value]="product.price" /></p>
+                <p class="price discounted-price"><app-price [value]="product.discountedPrice" /></p>
+              } @else {
+                <p class="price"><app-price [value]="product.price" /></p>
+              }
+            </div>
             <button
               type="button"
               class="card-wishlist"

@@ -1,0 +1,50 @@
+<div class="page-shell contact-page">
+  <app-page-header title="shop.contact.pageTitle" />
+
+  <section class="contact-card">
+    <h2>{{ 'shop.contact.title' | translate }}</h2>
+    <p class="intro-text">{{ 'shop.contact.description' | translate }}</p>
+
+    <form class="contact-form" novalidate>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>{{ 'shop.contact.name' | translate }}</mat-label>
+        <input matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>{{ 'shop.contact.email' | translate }}</mat-label>
+        <input matInput type="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>{{ 'shop.contact.subject' | translate }}</mat-label>
+        <input matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field message-field">
+        <mat-label>{{ 'shop.contact.message' | translate }}</mat-label>
+        <textarea matInput rows="6"></textarea>
+      </mat-form-field>
+
+      <button mat-raised-button type="submit" class="submit-btn">
+        {{ 'shop.contact.send' | translate }}
+      </button>
+    </form>
+
+    <div class="contact-info">
+      <h3>{{ 'shop.contact.getInTouch' | translate }}</h3>
+      <p class="info-item">
+        <mat-icon>email</mat-icon>
+        <span>{{ 'shop.contact.emailAddress' | translate }}</span>
+      </p>
+      <p class="info-item">
+        <mat-icon>phone</mat-icon>
+        <span>{{ 'shop.contact.phoneNumber' | translate }}</span>
+      </p>
+      <p class="info-item">
+        <mat-icon>access_time</mat-icon>
+        <span>{{ 'shop.contact.hours' | translate }}</span>
+      </p>
+    </div>
+  </section>
+</div>
