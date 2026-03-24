@@ -1,5 +1,4 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +13,6 @@ import { EmptyStateComponent, PageHeaderComponent, PriceComponent, ProfileMenuCo
   selector: 'app-product-details',
   imports: [
     RouterLink,
-    DatePipe,
     ProfileMenuComponent,
     PageHeaderComponent,
     PriceComponent,
