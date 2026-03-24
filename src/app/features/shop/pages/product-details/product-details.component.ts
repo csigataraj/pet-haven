@@ -7,13 +7,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { ProductCatalogService, ReviewService, ShopActionsService, TranslateService } from '../../../../core';
-import { EmptyStateComponent, PageHeaderComponent, PriceComponent, ProfileMenuComponent, TranslatePipe } from '../../../../shared/components';
+import { EmptyStateComponent, PageHeaderComponent, PriceComponent, TranslatePipe } from '../../../../shared/components';
 
 @Component({
   selector: 'app-product-details',
   imports: [
     RouterLink,
-    ProfileMenuComponent,
     PageHeaderComponent,
     PriceComponent,
     EmptyStateComponent,
