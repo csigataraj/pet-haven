@@ -1,5 +1,6 @@
 @use '../../../../shared/styles/page-shell-shared';
 @use '../../../../shared/styles/account-page-shared' as account;
+@use '../../../../shared/styles/theme-shared' as theme;
 
 .orders-page {
   @include account.account-page(1rem);
@@ -94,23 +95,19 @@
 }
 
 .order-status.processing {
-  background: #fff1d8;
-  color: #845a17;
+  @include theme.status-pill(warning);
 }
 
 .order-status.shipped {
-  background: #dff1ff;
-  color: #1f5675;
+  @include theme.status-pill(info);
 }
 
 .order-status.delivered {
-  background: #e5f7eb;
-  color: #2e6f5a;
+  @include theme.status-pill(success);
 }
 
 .order-status:not(.processing):not(.shipped):not(.delivered) {
-  background: #efe8ef;
-  color: #6c4f73;
+  @include theme.status-pill(neutral);
 }
 
 @media (max-width: 640px) {

@@ -1,4 +1,5 @@
 @use '../../../../shared/styles/page-shell-shared';
+@use '../../../../shared/styles/theme-shared' as theme;
 
 .checkout-page {
   display: grid;
@@ -17,10 +18,7 @@
 .order-summary,
 .success-card,
 .empty-state {
-  background: #fffdf6;
-  border: 1px solid #e3dac1;
-  border-radius: 18px;
-  padding: 1rem;
+  @include theme.surface-card(18px, 1rem);
 }
 
 .checkout-form {
@@ -49,10 +47,7 @@
 .card-fields {
   display: grid;
   gap: 0.55rem;
-  border: 1px solid #e3dac1;
-  border-radius: 12px;
-  background: #faf6ea;
-  padding: 0.75rem;
+  @include theme.soft-card(12px, 0.75rem);
 }
 
 .save-address-toggle {
@@ -68,10 +63,7 @@
 .coupon-box {
   display: grid;
   gap: 0.45rem;
-  border: 1px solid #e3dac1;
-  border-radius: 12px;
-  padding: 0.7rem;
-  background: #faf6ea;
+  @include theme.soft-card(12px, 0.7rem);
 }
 
 .coupon-title,
@@ -176,10 +168,7 @@
 
 .guest-upgrade {
   margin-top: 0.7rem;
-  border: 1px solid #e3dac1;
-  border-radius: 12px;
-  background: #faf6ea;
-  padding: 0.8rem;
+  @include theme.soft-card(12px, 0.8rem);
   display: grid;
   gap: 0.55rem;
   text-align: left;

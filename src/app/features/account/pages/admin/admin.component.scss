@@ -1,4 +1,5 @@
 @use '../../../../shared/styles/page-shell-shared';
+@use '../../../../shared/styles/theme-shared' as theme;
 
 .admin-page {
   display: grid;
@@ -10,10 +11,7 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  background: #fffdf6;
-  border: 1px solid #e3dac1;
-  border-radius: 12px;
-  padding: 0.6rem 0.85rem;
+  @include theme.surface-card(12px, 0.6rem 0.85rem);
 }
 
 .status-label {
@@ -32,27 +30,19 @@
 }
 
 .status-indicator.healthy {
-  background: #e5f7eb;
-  color: #2e6f5a;
-  border: 1px solid #bcd6c5;
+  @include theme.status-pill(success);
 }
 
 .status-indicator.degraded {
-  background: #fff1d8;
-  color: #845a17;
-  border: 1px solid #f5d099;
+  @include theme.status-pill(warning);
 }
 
 .status-indicator.offline {
-  background: #fde8e8;
-  color: #8f3f3f;
-  border: 1px solid #f5c5c5;
+  @include theme.status-pill(danger);
 }
 
 .status-indicator.disabled {
-  background: #f0f6f5;
-  color: #5a7381;
-  border: 1px solid #d9eeea;
+  @include theme.status-pill(neutral);
 }
 
 .admin-metrics {
@@ -63,10 +53,7 @@
 
 .metric-card,
 .panel {
-  background: #fffdf6;
-  border: 1px solid #e3dac1;
-  border-radius: 16px;
-  padding: 0.85rem;
+  @include theme.surface-card(16px, 0.85rem);
 }
 
 .metric-label,
@@ -110,10 +97,7 @@
 
 .create-product {
   margin-top: 0.65rem;
-  border: 1px solid #eadfbd;
-  border-radius: 12px;
-  background: #fdfaf0;
-  padding: 0.65rem;
+  @include theme.soft-card(12px, 0.65rem);
   display: grid;
   gap: 0.5rem;
 }
@@ -150,10 +134,7 @@
 
 .order-row,
 .inventory-row {
-  border: 1px solid #eadfbd;
-  border-radius: 12px;
-  background: #fdfaf0;
-  padding: 0.6rem;
+  @include theme.soft-card(12px, 0.6rem);
   display: flex;
   justify-content: space-between;
   align-items: center;

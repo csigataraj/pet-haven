@@ -1,0 +1,67 @@
+@mixin surface-card($radius: 16px, $padding: null, $border-color: #e1d5b5) {
+  background: linear-gradient(165deg, #fffef9 0%, #f8f2df 100%);
+  border: 1px solid $border-color;
+  border-radius: $radius;
+
+  @if $padding != null {
+    padding: $padding;
+  }
+}
+
+@mixin soft-card($radius: 12px, $padding: null, $border-color: #d9cda8) {
+  background: linear-gradient(165deg, #fdf8ea 0%, #f3ead1 100%);
+  border: 1px solid $border-color;
+  border-radius: $radius;
+
+  @if $padding != null {
+    padding: $padding;
+  }
+}
+
+@mixin primary-pill-button($padding: 0.6rem 1rem) {
+  border: 1px solid #1f4f62;
+  background: linear-gradient(135deg, #122f42, #1f4f62);
+  color: #f4f8fb;
+  border-radius: 999px;
+  padding: $padding;
+  font: inherit;
+}
+
+@mixin secondary-pill-button($padding: 0.6rem 1rem) {
+  border: 1px solid #b9ced7;
+  background: #edf4f7;
+  color: #1f4f62;
+  border-radius: 999px;
+  padding: $padding;
+  font: inherit;
+}
+
+@mixin pill-link($padding: 0.55rem 1rem) {
+  @include secondary-pill-button($padding);
+  text-decoration: none;
+  display: inline-block;
+}
+
+@mixin status-pill($tone) {
+  @if $tone == success {
+    background: #e5f7eb;
+    color: #2e6f5a;
+    border: 1px solid #bcd6c5;
+  } @else if $tone == info {
+    background: #dff1ff;
+    color: #1f5675;
+    border: 1px solid #bdddf2;
+  } @else if $tone == warning {
+    background: #fff1d8;
+    color: #845a17;
+    border: 1px solid #f5d099;
+  } @else if $tone == danger {
+    background: #fde8e8;
+    color: #8f3f3f;
+    border: 1px solid #f5c5c5;
+  } @else {
+    background: #f0f6f5;
+    color: #5a7381;
+    border: 1px solid #d9eeea;
+  }
+}

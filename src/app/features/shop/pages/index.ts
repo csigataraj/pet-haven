@@ -3,6 +3,5 @@ export * from './cart/cart.component';
 export * from './product-details/product-details.component';
 export * from './checkout/checkout.component';
 export * from './wishlist/wishlist.component';
-export * from './category/category.component';
 export * from './privacy/privacy.component';
 export * from './terms/terms.component';

@@ -2,23 +2,36 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 18px;
+  background: linear-gradient(90deg, #122f42 0%, #1a3f56 60%, #1f4f62 100%);
+  box-shadow: 0 8px 16px rgba(17, 33, 45, 0.16);
 }
 
 .page-header h1 {
   margin: 0;
-  color: #102733;
+  color: #f4f8fb;
   flex: 1;
   text-align: center;
 }
 
 .back-link {
   text-decoration: none;
-  color: #1f4f62;
-  border: 1px solid #c5d4c8;
+  color: #eff6fa;
+  border: 1px solid rgba(226, 240, 247, 0.42);
   border-radius: 999px;
   padding: 0.5rem 0.85rem;
-  background: #f7fbf8;
+  background: rgba(255, 255, 255, 0.12);
   white-space: nowrap;
+}
+
+.back-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.back-link:focus-visible {
+  outline: 2px solid rgba(244, 248, 251, 0.9);
+  outline-offset: 2px;
 }
 
 .header-slot {

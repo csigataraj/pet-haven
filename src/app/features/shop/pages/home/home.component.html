@@ -45,13 +45,13 @@
 
     <section class="aside-filters" aria-label="Category filters">
       @for (category of categories(); track category) {
-        <button
-          mat-stroked-button
-          type="button"
-          class="filter-chip"
-          [class.active]="selectedCategory() === category"
-          (click)="setCategory(category)"
-        >{{ categoryLabel(category) }}</button>
+        <mat-checkbox
+          class="category-checkbox"
+          [checked]="isCategorySelected(category)"
+          (change)="setCategory(category, $event.checked)"
+        >
+          {{ categoryLabel(category) }}
+        </mat-checkbox>
       }
 
       <mat-checkbox class="stock-toggle" [checked]="inStockOnly()" (change)="toggleInStockOnly($event.checked)">
@@ -82,7 +82,7 @@
               class="card-wishlist"
               [class.active]="shopActions.isInWishlist(product.sku)"
               [attr.aria-label]="(shopActions.isInWishlist(product.sku) ? 'shop.home.savedProduct' : 'shop.home.saveProduct') | translate"
-              (click)="shopActions.toggleWishlistBySku(product.sku)"
+              (click)="onWishlistClick(product.sku)"
             >
               <mat-icon aria-hidden="true">{{ shopActions.isInWishlist(product.sku) ? 'favorite' : 'favorite_border' }}</mat-icon>
             </button>
@@ -107,4 +107,17 @@
       </section>
     </main>
   </div>
+
+  @if (showWishlistAuthModal()) {
+    <button type="button" class="wishlist-auth-backdrop" (click)="closeWishlistAuthModal()" [attr.aria-label]="'navigation.close' | translate"></button>
+    <section class="wishlist-auth-modal" role="dialog" aria-modal="true" [attr.aria-label]="'wishlistAuth.title' | translate">
+      <h3>{{ 'wishlistAuth.title' | translate }}</h3>
+      <p>{{ 'wishlistAuth.message' | translate }}</p>
+      <div class="wishlist-auth-actions">
+        <button type="button" class="auth-btn primary" (click)="goToLoginFromWishlistModal()">{{ 'navigation.logIn' | translate }}</button>
+        <button type="button" class="auth-btn secondary" (click)="goToSignupFromWishlistModal()">{{ 'navigation.signUp' | translate }}</button>
+        <button type="button" class="auth-btn ghost" (click)="closeWishlistAuthModal()">{{ 'wishlistAuth.noThanks' | translate }}</button>
+      </div>
+    </section>
+  }
 </div>

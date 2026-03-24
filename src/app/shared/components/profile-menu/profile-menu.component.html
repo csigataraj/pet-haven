@@ -29,9 +29,10 @@
     <mat-divider></mat-divider>
   }
 
-  <a mat-menu-item routerLink="/wishlist">{{ 'navigation.wishlist' | translate }}</a>
-
-  <mat-divider></mat-divider>
+  @if (isAuthenticated()) {
+    <a mat-menu-item routerLink="/wishlist">{{ 'navigation.wishlist' | translate }}</a>
+    <mat-divider></mat-divider>
+  }
 
   <a mat-menu-item routerLink="/privacy">{{ 'navigation.privacy' | translate }}</a>
   <a mat-menu-item routerLink="/terms">{{ 'navigation.terms' | translate }}</a>

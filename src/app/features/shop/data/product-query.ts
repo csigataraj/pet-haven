@@ -13,15 +13,6 @@ export function getProductCategories(products: Product[], includeAll = false): s
   return includeAll ? ['All', ...categories] : categories;
 }
 
-export function findCategoryBySlug(products: Product[], slug: string): string | null {
-  const normalized = decodeURIComponent(slug).trim().toLowerCase();
-  if (!normalized) {
-    return null;
-  }
-
-  return getProductCategories(products).find((category) => category.toLowerCase() === normalized) ?? null;
-}
-
 export function filterAndSortProducts(products: Product[], options: ProductQueryOptions): Product[] {
   const query = options.query.trim().toLowerCase();
   const filtered = products.filter((product) => {

@@ -1,4 +1,5 @@
 @use '../../../../shared/styles/page-shell-shared';
+@use '../../../../shared/styles/theme-shared' as theme;
 
 .details-page {
   margin-bottom: 1rem;
@@ -12,10 +13,7 @@ app-page-header {
 .details-card {
   display: grid;
   gap: 1rem;
-  background: #fffdf6;
-  border: 1px solid #e3dac1;
-  border-radius: 20px;
-  padding: 1.2rem;
+  @include theme.surface-card(20px, 1.2rem);
 }
 
 .gallery img {
@@ -101,21 +99,13 @@ app-page-header {
 }
 
 .cart-btn {
-  border: 1px solid #2f6e57;
-  background: linear-gradient(135deg, #2f6e57, #4d9a7c);
-  color: #f4fff8;
-  border-radius: 999px;
-  padding: 0.6rem 1rem;
+  @include theme.primary-pill-button(0.6rem 1rem);
   cursor: pointer;
   font: inherit;
 }
 
 .wish-btn {
-  border: 1px solid #d5c9ab;
-  background: #f9f5e8;
-  color: #5e4a2a;
-  border-radius: 999px;
-  padding: 0.6rem 1rem;
+  @include theme.secondary-pill-button(0.6rem 1rem);
   cursor: pointer;
   font: inherit;
 }
@@ -200,11 +190,7 @@ app-page-header {
 
 .review-btn {
   justify-self: start;
-  border: 1px solid #2f6e57;
-  background: linear-gradient(135deg, #2f6e57, #4d9a7c);
-  color: #f4fff8;
-  border-radius: 999px;
-  padding: 0.52rem 0.95rem;
+  @include theme.primary-pill-button(0.52rem 0.95rem);
   cursor: pointer;
   font: inherit;
 }
@@ -217,7 +203,7 @@ app-page-header {
 .review-card {
   border: 1px solid #e3dac1;
   border-radius: 12px;
-  background: #fffdfa;
+  background: linear-gradient(165deg, #fffef9 0%, #f8f2df 100%);
   padding: 0.7rem;
 }
 
