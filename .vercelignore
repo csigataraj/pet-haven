@@ -11,4 +11,3 @@ test
 *.spec.ts
 mock-server
 proxy.conf.json
-src/assets/i18n/*.json

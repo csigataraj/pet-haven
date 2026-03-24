@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/pet-haven/browser",
+  "outputDirectory": "dist/angular-pet1/browser",
   "rewrites": [
     {
       "source": "/(.*)",
