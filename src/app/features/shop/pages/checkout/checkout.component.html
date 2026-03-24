@@ -1,0 +1,237 @@
+<div class="page-shell checkout-page">
+  <app-page-header title="shop.checkout.pageTitle" />
+
+  @if (placedOrder(); as order) {
+    <section class="success-card" aria-label="Order placed">
+      <h2>{{ 'shop.checkout.orderPlaced' | translate }}</h2>
+      <p class="success-copy">Your order <strong>{{ order.id }}</strong> is now in processing.</p>
+      <p class="success-copy">A confirmation email has been prepared for {{ order.customerEmail }}.</p>
+
+      <div class="success-total">
+        <span>{{ 'shop.checkout.orderTotal' | translate }}</span>
+        <strong><app-price [value]="order.total" [currencyCode]="order.currencyCode" /></strong>
+      </div>
+
+      <div class="success-actions">
+        @if (currentUser()) {
+          <button mat-raised-button color="primary" type="button" (click)="goToOrders()">{{ 'shop.checkout.viewMyOrders' | translate }}</button>
+        }
+        <a mat-stroked-button routerLink="/">{{ 'shop.checkout.continueShopping' | translate }}</a>
+      </div>
+
+      @if (!currentUser()) {
+        <section class="guest-upgrade" aria-label="Create account from guest checkout">
+          <h3>{{ 'shop.checkout.createAccountFromGuest' | translate }}</h3>
+          <p>{{ 'shop.checkout.createAccountMessage' | translate }}</p>
+          <div class="guest-fields">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'shop.checkout.createPasswordPlaceholder' | translate }}</mat-label>
+              <input
+                matInput
+                type="password"
+                [value]="guestPassword()"
+                (input)="setGuestPassword($any($event.target).value)"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'shop.checkout.confirmPasswordPlaceholder' | translate }}</mat-label>
+              <input
+                matInput
+                type="password"
+                [value]="guestPasswordConfirm()"
+                (input)="setGuestPasswordConfirm($any($event.target).value)"
+              />
+            </mat-form-field>
+          </div>
+          <button mat-raised-button color="primary" type="button" (click)="createGuestAccountFromOrder()">{{ 'shop.checkout.createAccountButton' | translate }}</button>
+          @if (guestSignupError()) {
+            <p class="coupon-error">{{ guestSignupError() }}</p>
+          }
+          @if (guestSignupSuccess()) {
+            <p class="coupon-ok">{{ guestSignupSuccess() }}</p>
+          }
+        </section>
+      }
+    </section>
+  } @else if (cartService.cartItems().length > 0) {
+    <div class="checkout-layout">
+      <form class="checkout-form" [formGroup]="checkoutForm" (ngSubmit)="submitOrder()" novalidate>
+        <h2>{{ 'shop.checkout.shippingDetails' | translate }}</h2>
+
+        @if (currentUser() && savedAddresses().length > 0) {
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'shop.checkout.useSavedAddress' | translate }}</mat-label>
+            <mat-select (selectionChange)="useSavedAddress($event.value)">
+              <mat-option value="">{{ 'shop.checkout.chooseAddress' | translate }}</mat-option>
+              @for (entry of savedAddresses(); track entry.id) {
+                <mat-option [value]="entry.id">{{ entry.label }} - {{ entry.city }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'shop.checkout.fullName' | translate }}</mat-label>
+          <input matInput type="text" formControlName="fullName" autocomplete="name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'shop.checkout.email' | translate }}</mat-label>
+          <input matInput type="email" formControlName="email" autocomplete="email" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'shop.checkout.address' | translate }}</mat-label>
+          <input matInput type="text" formControlName="address" autocomplete="street-address" />
+        </mat-form-field>
+
+        <div class="inline-fields">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'shop.checkout.city' | translate }}</mat-label>
+            <input matInput type="text" formControlName="city" autocomplete="address-level2" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'shop.checkout.postalCode' | translate }}</mat-label>
+            <input matInput type="text" formControlName="postalCode" autocomplete="postal-code" />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'shop.checkout.country' | translate }}</mat-label>
+          <mat-select formControlName="country">
+            @for (country of countryOptions; track country.code) {
+              <mat-option [value]="country.code">{{ getCountryLabel(country.labelKey) }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <h2>{{ 'shop.checkout.deliveryAndPayment' | translate }}</h2>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'shop.checkout.shippingMethod' | translate }}</mat-label>
+          <mat-select formControlName="shippingMethod">
+            <mat-option value="standard">{{ 'shop.checkout.standard' | translate }}</mat-option>
+            <mat-option value="express">{{ 'shop.checkout.express' | translate }}</mat-option>
+            <mat-option value="pickup">{{ 'shop.checkout.storePickup' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'shop.checkout.paymentMethod' | translate }}</mat-label>
+          <mat-select formControlName="paymentMethod">
+            <mat-option value="card">{{ 'shop.checkout.card' | translate }}</mat-option>
+            <mat-option value="cash-on-delivery">{{ 'shop.checkout.cashOnDelivery' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        @if (requiresCardDetails()) {
+          <section class="card-fields" aria-label="Card payment details">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'shop.checkout.cardHolder' | translate }}</mat-label>
+              <input matInput type="text" formControlName="cardHolder" autocomplete="cc-name" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'shop.checkout.cardNumber' | translate }}</mat-label>
+              <input matInput type="text" formControlName="cardNumber" autocomplete="cc-number" placeholder="4111111111111111" />
+            </mat-form-field>
+            <div class="inline-fields">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'shop.checkout.expiry' | translate }}</mat-label>
+                <input matInput type="text" formControlName="cardExpiry" autocomplete="cc-exp" placeholder="12/30" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'shop.checkout.cvv' | translate }}</mat-label>
+                <input matInput type="password" formControlName="cardCvv" autocomplete="cc-csc" placeholder="123" />
+              </mat-form-field>
+            </div>
+            @if (paymentError()) {
+              <p class="coupon-error">{{ paymentError() }}</p>
+            }
+          </section>
+        }
+
+        @if (currentUser()) {
+          <mat-checkbox
+            class="save-address-toggle"
+            [checked]="saveAddressInProfile()"
+            (change)="toggleSaveAddress($event.checked)"
+          >
+            {{ 'shop.checkout.saveAddress' | translate }}
+          </mat-checkbox>
+        }
+
+        <button mat-raised-button color="primary" type="submit">{{ 'shop.checkout.placeOrder' | translate }}</button>
+      </form>
+
+      <aside class="order-summary" aria-label="Checkout summary">
+        <h2>{{ 'shop.checkout.summary' | translate }}</h2>
+
+        <section class="coupon-box" aria-label="Coupon code">
+          <p class="coupon-title">{{ 'shop.checkout.couponCode' | translate }}</p>
+          <div class="coupon-row">
+            <mat-form-field appearance="outline" class="coupon-input">
+              <mat-label>{{ 'shop.checkout.couponPlaceholder' | translate }}</mat-label>
+              <input
+                matInput
+                type="text"
+                [value]="couponInput()"
+                (input)="setCouponInput($any($event.target).value)"
+              />
+            </mat-form-field>
+            <button mat-stroked-button type="button" (click)="applyCoupon()">{{ 'shop.checkout.applyCoupon' | translate }}</button>
+          </div>
+          @if (appliedCoupon(); as coupon) {
+            <p class="coupon-ok">Applied {{ coupon.code }}: {{ getCouponDescription(coupon.descriptionKey) }}</p>
+          }
+          @if (couponError()) {
+            <p class="coupon-error">{{ couponError() }}</p>
+          }
+          <p class="coupon-hint">Available: @for (coupon of availableCoupons; track coupon.code) { <span>{{ coupon.code }}</span> }</p>
+        </section>
+
+        <div class="summary-lines">
+          @for (item of cartService.cartItems(); track item.product.sku) {
+            <div class="line">
+              <span>{{ item.product.name }} x {{ item.quantity }}</span>
+              <span><app-price [value]="item.product.price * item.quantity" [currencyCode]="currencyCode()" /></span>
+            </div>
+          }
+        </div>
+
+        <div class="totals">
+          <div class="line">
+            <span>{{ 'shop.checkout.subtotal' | translate }}</span>
+            <span><app-price [value]="cartService.totalPrice()" [currencyCode]="currencyCode()" /></span>
+          </div>
+          <div class="line">
+            <span>{{ 'shop.checkout.shipping' | translate }}</span>
+            <span><app-price [value]="shippingCost()" [currencyCode]="currencyCode()" /></span>
+          </div>
+          @if (discountAmount() > 0) {
+            <div class="line discount">
+              <span>{{ 'shop.checkout.discount' | translate }}</span>
+              <span>-<app-price [value]="discountAmount()" [currencyCode]="currencyCode()" /></span>
+            </div>
+          }
+          @if (taxAmount() > 0) {
+            <div class="line">
+              <span>{{ 'shop.checkout.tax' | translate }}</span>
+              <span><app-price [value]="taxAmount()" [currencyCode]="currencyCode()" /></span>
+            </div>
+          }
+          <div class="line total">
+            <span>{{ 'shop.checkout.total' | translate }}</span>
+            <span><app-price [value]="grandTotal()" [currencyCode]="currencyCode()" /></span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  } @else {
+    <section class="empty-state" aria-label="Empty checkout">
+      <h2>{{ 'shop.checkout.noItemsTitle' | translate }}</h2>
+      <p>{{ 'shop.checkout.noItemsMessage' | translate }}</p>
+      <a mat-stroked-button routerLink="/">{{ 'shop.checkout.browseProducts' | translate }}</a>
+    </section>
+  }
+</div>

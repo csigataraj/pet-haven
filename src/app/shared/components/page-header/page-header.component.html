@@ -1,0 +1,8 @@
+<header class="page-header">
+  <a class="back-link" [routerLink]="backLink">{{ backLabel | translate }}</a>
+  <h1>{{ title | translate }}</h1>
+  <div class="header-slot">
+    <app-language-switcher />
+    <ng-content />
+  </div>
+</header>

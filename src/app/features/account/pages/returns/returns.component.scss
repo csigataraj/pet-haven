@@ -1,0 +1,50 @@
+@use '../../../../shared/styles/page-shell-shared';
+@use '../../../../shared/styles/account-page-shared' as account;
+
+.returns-page {
+  @include account.account-page(0.8rem);
+}
+
+.returns-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.return-card {
+  @include account.account-surface(0.8rem);
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.id,
+.meta,
+.total {
+  margin: 0;
+}
+
+.id {
+  color: #11212d;
+  font-weight: 700;
+}
+
+.meta {
+  color: #5a7381;
+  font-size: 0.82rem;
+}
+
+.total {
+  color: #214f5d;
+  font-weight: 700;
+}
+
+.detail-link {
+  @include account.account-pill-link();
+}
+
+@media (max-width: 700px) {
+  .return-card {
+    grid-template-columns: 1fr;
+  }
+}

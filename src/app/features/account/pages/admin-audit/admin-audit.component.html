@@ -1,0 +1,77 @@
+<div class="page-shell admin-audit-page">
+  <app-page-header title="account.admin.auditTrail" />
+
+  <section class="panel">
+    <p class="order-meta">{{ 'account.admin.integrity' | translate:{ status: (auditChainValid() ? ('account.admin.integrityVerified' | translate) : ('account.admin.integrityTampered' | translate)) } }}</p>
+
+    <div class="audit-controls">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'account.admin.auditControls.area' | translate }}</mat-label>
+        <mat-select [value]="auditAreaFilter()" (selectionChange)="setAuditAreaFilter($event.value)">
+          @for (option of auditAreaOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.labelKey | translate }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'account.admin.auditControls.search' | translate }}</mat-label>
+        <input
+          matInput
+          type="text"
+          [value]="auditQuery()"
+          [placeholder]="'account.admin.auditControls.placeholder' | translate"
+          (input)="setAuditQuery($any($event.target).value)"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="audit-actions">
+      <button mat-stroked-button type="button" class="action-btn small" (click)="exportAuditCsv()">{{ 'account.admin.exportCsv' | translate }}</button>
+      <button mat-stroked-button type="button" class="action-btn small" (click)="exportAuditJson()">{{ 'account.admin.exportJson' | translate }}</button>
+    </div>
+
+    <p class="order-meta">{{ 'account.admin.matchingEntries' | translate:{ count: filteredAuditEntries().length } }}</p>
+
+    <div class="audit-pager">
+      <mat-form-field appearance="outline" class="audit-page-size">
+        <mat-label>{{ 'account.admin.pageSize' | translate }}</mat-label>
+        <mat-select [value]="auditPageSize()" (selectionChange)="setAuditPageSize($event.value)">
+          @for (size of auditPageSizeOptions; track size) {
+            <mat-option [value]="size">{{ size }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button mat-stroked-button type="button" class="action-btn small" [disabled]="!canPreviousAuditPage()" (click)="previousAuditPage()">{{ 'account.admin.previous' | translate }}</button>
+      <p class="order-meta">{{ 'account.admin.page' | translate:{ current: auditPage(), total: auditTotalPages() } }}</p>
+      <button mat-stroked-button type="button" class="action-btn small" [disabled]="!canNextAuditPage()" (click)="nextAuditPage()">{{ 'account.admin.next' | translate }}</button>
+    </div>
+
+    @if (auditEntries().length > 0) {
+      <div class="order-list">
+        @for (entry of auditEntries(); track entry.id) {
+          <article class="order-row">
+            <div>
+              <p class="order-id">{{ auditAreaLabelKey(entry.area) | translate }} • {{ auditActionLabel(entry.action) }}</p>
+              <p class="order-meta">
+                {{ 'account.admin.target' | translate }}
+                @if (auditTargetLink(entry); as targetLink) {
+                  <a class="audit-link" [routerLink]="targetLink">{{ entry.targetId }}</a>
+                } @else {
+                  {{ entry.targetId }}
+                }
+              </p>
+              <p class="order-meta">{{ entry.details }}</p>
+              <p class="order-meta">{{ 'account.admin.actor' | translate:{ name: entry.actor } }}</p>
+              <p class="order-meta">{{ 'account.admin.hash' | translate:{ hash: entry.hash } }}</p>
+            </div>
+            <p class="order-meta">{{ entry.timestamp | date:'short' }}</p>
+          </article>
+        }
+      </div>
+    } @else {
+      <p class="empty">{{ 'account.admin.noAuditEntries' | translate }}</p>
+    }
+  </section>
+
+  <a mat-stroked-button class="back-link" routerLink="/admin">{{ 'account.fraudCase.backToBackoffice' | translate }}</a>
+</div>

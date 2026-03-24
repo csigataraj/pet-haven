@@ -1,0 +1,18 @@
+@use '../../../../shared/styles/auth-form-shared';
+
+.hint {
+  margin: 0;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #7a8f99;
+  line-height: 1.6;
+}
+
+.hint code {
+  background: #eef2f4;
+  border-radius: 4px;
+  padding: 0.05em 0.3em;
+  font-size: 0.9em;
+  color: #1f4f62;
+}
+

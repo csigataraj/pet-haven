@@ -1,0 +1,78 @@
+@use '../../../../shared/styles/page-shell-shared';
+@use '../../../../shared/styles/account-page-shared' as account;
+
+.analytics-page {
+  @include account.account-page(1rem);
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.7rem;
+}
+
+.kpi-card,
+.top-products {
+  @include account.account-surface(0.85rem);
+}
+
+.label,
+.value,
+.sku,
+.units,
+.empty {
+  margin: 0;
+}
+
+.label {
+  color: #5a6f7d;
+  font-size: 0.82rem;
+}
+
+.value {
+  margin-top: 0.25rem;
+  color: #11212d;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.top-products h2 {
+  margin: 0;
+  color: #163447;
+  font-size: 1rem;
+}
+
+.product-list {
+  margin-top: 0.65rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.product-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  @include account.account-soft-row(0.65rem);
+}
+
+.sku {
+  color: #5e7584;
+  font-size: 0.76rem;
+}
+
+.product-row h3 {
+  margin: 0.25rem 0 0;
+  color: #11212d;
+  font-size: 0.95rem;
+}
+
+.units {
+  color: #2f4c5b;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.empty {
+  margin-top: 0.6rem;
+  color: #5a6f7d;
+}

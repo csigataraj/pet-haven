@@ -1,0 +1,96 @@
+<div class="page-shell account-page">
+  <app-page-header title="account.profile.pageTitle" />
+
+  @if (currentUser(); as user) {
+    <div class="account-card">
+      <section class="profile-section" [attr.aria-label]="'account.profile.profileDetails' | translate">
+        <p class="avatar" aria-hidden="true">{{ user.name.charAt(0).toUpperCase() }}</p>
+        <div class="profile-info">
+          <h2>{{ user.name }}</h2>
+          <p class="profile-email">{{ user.email }}</p>
+          <p class="profile-badge">{{ 'account.profile.registeredCustomer' | translate }}</p>
+        </div>
+      </section>
+
+      <section class="details-grid" [attr.aria-label]="'account.profile.accountDetails' | translate">
+        <div class="detail-tile">
+          <p class="tile-label">{{ 'account.profile.emailAddress' | translate }}</p>
+          <p class="tile-value">{{ user.email }}</p>
+        </div>
+        <div class="detail-tile">
+          <p class="tile-label">{{ 'account.profile.fullName' | translate }}</p>
+          <p class="tile-value">{{ user.name }}</p>
+        </div>
+        <div class="detail-tile">
+          <p class="tile-label">{{ 'account.profile.accountType' | translate }}</p>
+          <p class="tile-value">{{ 'account.profile.customer' | translate }}</p>
+        </div>
+        <div class="detail-tile">
+          <p class="tile-label">{{ 'account.profile.memberSince' | translate }}</p>
+          <p class="tile-value">{{ 'account.profile.march2026' | translate }}</p>
+        </div>
+      </section>
+
+      <section class="quick-links" [attr.aria-label]="'account.profile.quickLinks' | translate">
+        <h2>{{ 'account.profile.quickLinks' | translate }}</h2>
+        <div class="links-row">
+          <a mat-stroked-button routerLink="/" class="quick-link">{{ 'account.profile.browseProducts' | translate }}</a>
+          <a mat-stroked-button routerLink="/cart" class="quick-link">{{ 'account.profile.viewCart' | translate }}</a>
+          <a mat-stroked-button routerLink="/orders" class="quick-link">{{ 'account.profile.myOrders' | translate }}</a>
+        </div>
+      </section>
+
+      <section class="addresses" [attr.aria-label]="'account.profile.savedAddresses' | translate">
+        <h2>{{ 'account.profile.savedAddresses' | translate }}</h2>
+
+        @if (savedAddresses().length > 0) {
+          <div class="address-list">
+            @for (entry of savedAddresses(); track entry.id) {
+              <article class="address-card">
+                <p class="address-label">{{ entry.label }}</p>
+                <p>{{ entry.address }}</p>
+                <p>{{ entry.city }}, {{ entry.postalCode }}</p>
+                <p>{{ entry.country }}</p>
+                <button mat-stroked-button color="warn" type="button" class="remove-address" (click)="removeAddress(entry.id)">{{ 'account.profile.removeAddress' | translate }}</button>
+              </article>
+            }
+          </div>
+        } @else {
+          <p class="address-empty">{{ 'account.profile.noAddresses' | translate }}</p>
+        }
+
+        <form class="address-form" [formGroup]="addressForm" (ngSubmit)="addAddress()" novalidate>
+          <h3>{{ 'account.profile.addNewAddress' | translate }}</h3>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'account.profile.addressForm.label' | translate }}</mat-label>
+            <input matInput type="text" formControlName="label" [placeholder]="'account.profile.addressForm.labelPlaceholder' | translate" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'account.profile.addressForm.address' | translate }}</mat-label>
+            <input matInput type="text" formControlName="address" [placeholder]="'account.profile.addressForm.addressPlaceholder' | translate" />
+          </mat-form-field>
+          <div class="address-inline">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'account.profile.addressForm.city' | translate }}</mat-label>
+              <input matInput type="text" formControlName="city" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'account.profile.addressForm.postalCode' | translate }}</mat-label>
+              <input matInput type="text" formControlName="postalCode" />
+            </mat-form-field>
+          </div>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'account.profile.addressForm.countryCode' | translate }}</mat-label>
+            <input matInput type="text" formControlName="country" />
+          </mat-form-field>
+          @if (addressError()) {
+            <p class="address-error">{{ addressError() }}</p>
+          }
+          <button mat-raised-button color="primary" type="submit" class="save-address">{{ 'account.profile.addressForm.saveAddress' | translate }}</button>
+        </form>
+      </section>
+
+      <button mat-stroked-button type="button" class="logout-btn" (click)="logout()">{{ 'account.profile.signOut' | translate }}</button>
+    </div>
+  }
+</div>

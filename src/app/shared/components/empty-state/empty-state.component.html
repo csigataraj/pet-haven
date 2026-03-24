@@ -1,0 +1,7 @@
+<section class="empty-state" [attr.aria-label]="(ariaLabelKey || titleKey) | translate:titleParams">
+  <h2>{{ titleKey | translate:titleParams }}</h2>
+  <p>{{ messageKey | translate:messageParams }}</p>
+  @if (actionLabelKey && actionLink) {
+    <a class="empty-action" [routerLink]="actionLink">{{ actionLabelKey | translate }}</a>
+  }
+</section>

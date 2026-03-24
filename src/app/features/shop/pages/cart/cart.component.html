@@ -1,0 +1,83 @@
+<div class="page-shell cart-page">
+  <app-page-header title="shop.cart.pageTitle">
+    <p class="item-count">{{ 'shop.cart.itemCount' | translate:{ count: cartService.totalCount() } }}</p>
+  </app-page-header>
+
+  @if (cartService.cartItems().length > 0) {
+    <div class="cart-layout">
+      <section class="cart-items" [attr.aria-label]="'shop.cart.cartItems' | translate">
+        @for (item of cartService.cartItems(); track item.product.sku) {
+          <article class="cart-row">
+            <div class="row-info">
+              <p class="row-sku">{{ item.product.sku }}</p>
+              <h2>{{ item.product.name }}</h2>
+              <p class="row-category">{{ item.product.category }}</p>
+            </div>
+
+            <div class="row-qty" [attr.aria-label]="'shop.cart.quantityControls' | translate">
+              <button
+                mat-mini-fab
+                type="button"
+                class="qty-btn"
+                [attr.aria-label]="'shop.cart.decreaseQty' | translate"
+                (click)="decrement(item.product.sku, item.quantity)"
+              >−</button>
+              <span class="qty-value">{{ item.quantity }}</span>
+              <button
+                mat-mini-fab
+                type="button"
+                class="qty-btn"
+                [attr.aria-label]="'shop.cart.increaseQty' | translate"
+                (click)="increment(item.product.sku, item.quantity)"
+              >+</button>
+            </div>
+
+            <div class="row-right">
+              <p class="row-price"><app-price [value]="item.product.price" /></p>
+              <button
+                mat-stroked-button
+                type="button"
+                class="remove-btn"
+                [attr.aria-label]="'shop.cart.removeItem' | translate:{ name: item.product.name }"
+                (click)="remove(item.product.sku)"
+              >{{ 'shop.cart.remove' | translate }}</button>
+            </div>
+          </article>
+        }
+      </section>
+
+      <aside class="cart-summary" [attr.aria-label]="'shop.cart.orderSummary' | translate">
+        <h2>{{ 'shop.cart.orderSummary' | translate }}</h2>
+
+        <div class="summary-lines">
+          @for (item of cartService.cartItems(); track item.product.sku) {
+            <div class="summary-line">
+              <span>{{ item.product.name }} &times; {{ item.quantity }}</span>
+              <span><app-price [value]="item.product.price * item.quantity" /></span>
+            </div>
+          }
+        </div>
+
+        <div class="summary-total">
+          <span>{{ 'shop.cart.total' | translate }}</span>
+          <span><app-price [value]="cartService.totalPrice()" /></span>
+        </div>
+
+        <button mat-flat-button color="primary" type="button" class="checkout-btn" (click)="checkout()">
+          {{ 'shop.cart.proceedToCheckout' | translate }}
+        </button>
+
+        <button mat-stroked-button type="button" class="clear-btn" (click)="cartService.clear()">
+          {{ 'shop.cart.clearCart' | translate }}
+        </button>
+      </aside>
+    </div>
+  } @else {
+    <section class="empty-state" [attr.aria-label]="'shop.cart.emptyCart' | translate">
+      <p class="empty-icon" aria-hidden="true">&#128722;</p>
+      <h2>{{ 'shop.cart.emptyTitle' | translate }}</h2>
+      <p>{{ 'shop.cart.emptyMessage' | translate }}</p>
+      <a mat-stroked-button class="browse-link" routerLink="/">{{ 'shop.cart.browseProducts' | translate }}</a>
+    </section>
+  }
+</div>

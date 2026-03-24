@@ -1,0 +1,65 @@
+<div class="page-shell order-details-page">
+  <app-page-header title="account.orderDetails.pageTitle" />
+
+  @if (order(); as currentOrder) {
+    <section class="summary-card">
+      <p class="id">{{ currentOrder.id }}</p>
+      <h2>{{ 'account.orderDetails.status' | translate:{ status: labels.orderStatus(currentOrder.status) } }}</h2>
+      <p class="meta">{{ 'account.orderDetails.placedLabel' | translate }} {{ currentOrder.date }} • {{ 'account.orderDetails.etaLabel' | translate }} {{ currentOrder.etaDate }}</p>
+      <p class="meta">{{ 'account.orderDetails.tracking' | translate:{ code: currentOrder.trackingCode } }}</p>
+      @if (currentOrder.returnLabelCode) {
+        <p class="meta">{{ 'account.orderDetails.returnLabel' | translate:{ code: currentOrder.returnLabelCode || '', carrier: currentOrder.returnCarrier || '' } }}</p>
+      }
+      @if (currentOrder.returnTrackingCode) {
+        <p class="meta">{{ 'account.orderDetails.returnTracking' | translate:{ code: currentOrder.returnTrackingCode } }}</p>
+      }
+      <p class="meta">
+        {{ 'account.orderDetails.payment' | translate }}
+        @if (currentOrder.paymentAuthCode) {
+          {{ 'account.orderDetails.authCode' | translate:{ code: currentOrder.paymentAuthCode || '', last4: currentOrder.paymentCardLast4 || '' } }}
+        } @else {
+          {{ 'account.orderDetails.cashOnDelivery' | translate }}
+        }
+      </p>
+      <p class="total"><app-price [value]="currentOrder.total" [currencyCode]="currentOrder.currencyCode" /></p>
+    </section>
+
+    <section class="timeline" [attr.aria-label]="'account.orderDetails.orderTimeline' | translate">
+      @for (entry of timeline(); track entry.key) {
+        <article class="timeline-item" [class.active]="entry.active">
+          <p class="step">{{ entry.label }}</p>
+          <p class="note">{{ entry.note }}</p>
+        </article>
+      }
+    </section>
+
+    @if (returnEvents().length > 0) {
+      <section class="timeline" [attr.aria-label]="'account.orderDetails.returnPackageTimeline' | translate">
+        <h2>{{ 'account.orderDetails.returnPackageTimeline' | translate }}</h2>
+        @for (event of returnEvents(); track event.code) {
+          <article class="timeline-item active">
+            <p class="step">{{ event.label }}</p>
+            <p class="note">{{ event.note || '-' }}</p>
+          </article>
+        }
+      </section>
+    }
+
+    <section class="items" [attr.aria-label]="'account.orderDetails.items' | translate">
+      <h2>{{ 'account.orderDetails.items' | translate }}</h2>
+      @for (item of currentOrder.items; track item.sku) {
+        <article class="item-row">
+          <div>
+            <p class="item-sku">{{ item.sku }}</p>
+            <p class="item-name">{{ item.name }} x {{ item.quantity }}</p>
+          </div>
+          <p class="item-total"><app-price [value]="item.unitPrice * item.quantity" [currencyCode]="currentOrder.currencyCode" /></p>
+        </article>
+      }
+    </section>
+
+    <a class="back" routerLink="/orders">{{ 'account.orderDetails.backToOrders' | translate }}</a>
+  } @else {
+    <app-empty-state titleKey="account.orderDetails.notFound" messageKey="account.orderDetails.notFoundMessage" actionLabelKey="account.orderDetails.backToOrders" actionLink="/orders" ariaLabelKey="account.orderDetails.notFound" />
+  }
+</div>

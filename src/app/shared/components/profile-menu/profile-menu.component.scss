@@ -1,0 +1,69 @@
+:host {
+  display: inline-block;
+}
+
+.profile-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid rgba(16, 39, 51, 0.18);
+  border-radius: 999px;
+  color: #2f4a59;
+  background: #ffffff;
+  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.profile-trigger:hover {
+  background: #f8fbfc;
+}
+
+.profile-trigger:focus-visible {
+  outline: 2px solid #102733;
+  outline-offset: 2px;
+}
+
+.icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  font-size: 1.05rem;
+}
+
+.label {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.chevron {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  opacity: 0.65;
+  transition: transform 160ms ease;
+}
+
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+.menu-user-wrap {
+  display: block;
+  height: auto;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.menu-user {
+  margin: 0;
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: #102733;
+}
+
+.menu-email {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #5a7381;
+  word-break: break-all;
+}

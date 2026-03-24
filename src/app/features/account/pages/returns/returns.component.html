@@ -1,0 +1,37 @@
+<div class="page-shell returns-page">
+  <app-page-header title="account.returns.pageTitle" />
+
+  @if (returnedOrders().length > 0) {
+    <section class="returns-list" [attr.aria-label]="'account.returns.returnedOrders' | translate">
+      @for (order of returnedOrders(); track order.id) {
+        <article class="return-card">
+          <div>
+            <p class="id">{{ order.id }}</p>
+            <p class="meta">{{ 'account.orders.returnStatus' | translate:{ status: labels.orderStatus(order.status), code: order.trackingCode } }}</p>
+            <p class="meta">{{ 'account.returns.paidWith' | translate:{ method: labels.paymentMethod(order.paymentMethod) } }}</p>
+            @if (order.returnReason) {
+              <p class="meta">{{ 'account.returns.returnReason' | translate:{ reason: order.returnReason } }}</p>
+            }
+            @if (order.returnLabelCode) {
+              <p class="meta">{{ 'account.returns.returnLabel' | translate:{ code: order.returnLabelCode } }}</p>
+            }
+            @if (order.returnTrackingCode) {
+              <p class="meta">{{ 'account.returns.returnTracking' | translate:{ carrier: order.returnCarrier || '', code: order.returnTrackingCode } }}</p>
+            }
+            @if (order.returnEvents.length > 0) {
+              <div class="events">
+                @for (event of order.returnEvents; track event.code) {
+                  <p class="meta">{{ labels.returnEvent(event.code) }}: {{ event.note || '-' }}</p>
+                }
+              </div>
+            }
+          </div>
+          <p class="total"><app-price [value]="order.total" [currencyCode]="order.currencyCode" /></p>
+          <a class="detail-link" [routerLink]="['/orders', order.id]">{{ 'account.returns.viewDetails' | translate }}</a>
+        </article>
+      }
+    </section>
+  } @else {
+    <app-empty-state titleKey="account.returns.noReturns" messageKey="account.returns.noReturnsMessage" ariaLabelKey="account.returns.noReturns" />
+  }
+</div>

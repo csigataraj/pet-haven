@@ -1,0 +1,45 @@
+<div class="page-shell analytics-page">
+  <app-page-header title="account.analytics.pageTitle" />
+
+  <section class="kpi-grid" [attr.aria-label]="'account.analytics.kpis' | translate">
+    <article class="kpi-card">
+      <p class="label">{{ 'account.analytics.orders' | translate }}</p>
+      <p class="value">{{ orders().length }}</p>
+    </article>
+
+    <article class="kpi-card">
+      <p class="label">{{ 'account.analytics.revenue' | translate }}</p>
+      <p class="value"><app-price [value]="totalRevenue()" /></p>
+    </article>
+
+    <article class="kpi-card">
+      <p class="label">{{ 'account.analytics.averageOrderValue' | translate }}</p>
+      <p class="value"><app-price [value]="averageOrderValue()" /></p>
+    </article>
+
+    <article class="kpi-card">
+      <p class="label">{{ 'account.analytics.unitsSold' | translate }}</p>
+      <p class="value">{{ totalUnitsSold() }}</p>
+    </article>
+  </section>
+
+  <section class="top-products" [attr.aria-label]="'account.analytics.topProducts' | translate">
+    <h2>{{ 'account.analytics.topProducts' | translate }}</h2>
+
+    @if (topProducts().length > 0) {
+      <div class="product-list">
+        @for (item of topProducts(); track item.sku) {
+          <article class="product-row">
+            <div>
+              <p class="sku">{{ item.sku }}</p>
+              <h3>{{ item.name }}</h3>
+            </div>
+            <p class="units">{{ 'account.analytics.unitsSoldLabel' | translate:{ count: item.units } }}</p>
+          </article>
+        }
+      </div>
+    } @else {
+      <p class="empty">{{ 'account.analytics.noAnalytics' | translate }}</p>
+    }
+  </section>
+</div>

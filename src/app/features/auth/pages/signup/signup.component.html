@@ -1,0 +1,110 @@
+<div class="auth-page" aria-label="Sign up page">
+  <div class="auth-card">
+    <header class="auth-header">
+      <p class="brand-eyebrow">{{ 'app.brand.eyebrow' | translate }}</p>
+      <h1 class="brand-title">{{ 'app.brand.name' | translate }}</h1>
+      <p class="brand-sub">{{ 'auth.signup.title' | translate }}</p>
+    </header>
+
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      @if (signupError()) {
+        <div class="alert" role="alert">{{ signupError() }}</div>
+      }
+
+      <div class="field">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'auth.signup.fullName' | translate }}</mat-label>
+          <input
+            matInput
+            id="name"
+            type="text"
+            formControlName="name"
+            [placeholder]="'auth.signup.fullNamePlaceholder' | translate"
+            autocomplete="name"
+            [class.invalid]="name.invalid && name.touched"
+          />
+        </mat-form-field>
+        @if (name.touched && name.hasError('required')) {
+          <p class="field-error">{{ 'auth.signup.errors.nameRequired' | translate }}</p>
+        } @else if (name.touched && name.hasError('minlength')) {
+          <p class="field-error">{{ 'auth.signup.errors.nameMinLength' | translate }}</p>
+        }
+      </div>
+
+      <div class="field">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'auth.signup.email' | translate }}</mat-label>
+          <input
+            matInput
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="you&#64;example.com"
+            autocomplete="email"
+            [class.invalid]="email.invalid && email.touched"
+          />
+        </mat-form-field>
+        @if (email.touched && email.hasError('required')) {
+          <p class="field-error">{{ 'auth.signup.errors.emailRequired' | translate }}</p>
+        } @else if (email.touched && email.hasError('email')) {
+          <p class="field-error">{{ 'auth.signup.errors.emailInvalid' | translate }}</p>
+        }
+      </div>
+
+      <div class="field">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'auth.signup.password' | translate }}</mat-label>
+          <input
+            matInput
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            [placeholder]="'auth.signup.passwordPlaceholder' | translate"
+            autocomplete="new-password"
+            [class.invalid]="password.invalid && password.touched"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            [attr.aria-label]="(showPassword() ? 'auth.signup.hidePassword' : 'auth.signup.showPassword') | translate"
+            (click)="showPassword.set(!showPassword())"
+          >
+            <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+        @if (password.touched && password.hasError('required')) {
+          <p class="field-error">{{ 'auth.signup.errors.passwordRequired' | translate }}</p>
+        } @else if (password.touched && password.hasError('minlength')) {
+          <p class="field-error">{{ 'auth.signup.errors.passwordMinLength' | translate }}</p>
+        }
+      </div>
+
+      <div class="field">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'auth.signup.confirmPassword' | translate }}</mat-label>
+          <input
+            matInput
+            id="confirmPassword"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            [placeholder]="'auth.signup.confirmPasswordPlaceholder' | translate"
+            autocomplete="new-password"
+            [class.invalid]="(confirmPassword.touched && confirmPassword.hasError('required')) || (form.hasError('passwordsMismatch') && confirmPassword.touched)"
+          />
+        </mat-form-field>
+        @if (confirmPassword.touched && confirmPassword.hasError('required')) {
+          <p class="field-error">{{ 'auth.signup.errors.confirmPasswordRequired' | translate }}</p>
+        } @else if (form.hasError('passwordsMismatch') && confirmPassword.touched) {
+          <p class="field-error">{{ 'auth.signup.errors.passwordsMismatch' | translate }}</p>
+        }
+      </div>
+
+      <button mat-flat-button color="primary" type="submit" class="submit-btn" [disabled]="loading()">
+        {{ (loading() ? 'auth.signup.creatingAccountButton' : 'auth.signup.createAccountButton') | translate }}
+      </button>
+    </form>
+
+    <p class="switch-link">{{ 'auth.signup.alreadyHaveAccount' | translate }} <a routerLink="/login">{{ 'auth.signup.signInLink' | translate }}</a></p>
+  </div>
+</div>

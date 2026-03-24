@@ -1,0 +1,46 @@
+@use '../../../../shared/styles/page-shell-shared';
+@use '../../../../shared/styles/account-page-shared' as account;
+
+.notifications-page {
+  @include account.account-page(0.9rem);
+}
+
+.clear-btn {
+  justify-self: start;
+}
+
+.notifications-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.note-card,
+.empty-state {
+  @include account.account-surface(0.9rem);
+}
+
+.note-meta,
+.note-to,
+.note-preview {
+  margin: 0;
+}
+
+.note-meta,
+.note-to {
+  font-size: 0.82rem;
+  color: #607684;
+}
+
+.note-card h2 {
+  margin: 0.35rem 0;
+  color: #11212d;
+  font-size: 1rem;
+}
+
+.note-preview {
+  color: #2f4c5b;
+}
+
+.empty-state {
+  text-align: center;
+}

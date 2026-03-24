@@ -1,0 +1,77 @@
+<div class="auth-page" aria-label="Login page">
+  <div class="auth-card">
+    <header class="auth-header">
+      <p class="brand-eyebrow">{{ 'auth.login.eyebrow' | translate }}</p>
+      <h1 class="brand-title">{{ 'auth.login.subtitle' | translate }}</h1>
+      <p class="brand-sub">{{ 'auth.login.title' | translate }}</p>
+    </header>
+
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      @if (loginError()) {
+        <div class="alert" role="alert">
+          {{ loginError() }}
+        </div>
+      }
+
+      <div class="field">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'auth.login.email' | translate }}</mat-label>
+          <input
+            matInput
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="you&#64;pethaven.com"
+            autocomplete="email"
+            [class.invalid]="email.invalid && email.touched"
+          />
+        </mat-form-field>
+        @if (email.touched && email.hasError('required')) {
+          <p class="field-error">{{ 'auth.login.errors.emailRequired' | translate }}</p>
+        } @else if (email.touched && email.hasError('email')) {
+          <p class="field-error">{{ 'auth.login.errors.emailInvalid' | translate }}</p>
+        }
+      </div>
+
+      <div class="field">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'auth.login.password' | translate }}</mat-label>
+          <input
+            matInput
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            [class.invalid]="password.invalid && password.touched"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            [attr.aria-label]="(showPassword() ? 'auth.login.hidePassword' : 'auth.login.showPassword') | translate"
+            (click)="showPassword.set(!showPassword())"
+          >
+            <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+        @if (password.touched && password.hasError('required')) {
+          <p class="field-error">{{ 'auth.login.errors.passwordRequired' | translate }}</p>
+        } @else if (password.touched && password.hasError('minlength')) {
+          <p class="field-error">{{ 'auth.login.errors.passwordMinLength' | translate }}</p>
+        }
+      </div>
+
+      <button mat-flat-button color="primary" type="submit" class="submit-btn" [disabled]="loading()">
+        {{ (loading() ? 'auth.login.signingInButton' : 'auth.login.signInButton') | translate }}
+      </button>
+    </form>
+
+    <p class="hint">
+      {{ 'auth.login.demoCredentials' | translate }}<br />
+      <code>admin&#64;pethaven.com</code> / <code>pet1234</code>
+    </p>
+
+    <p class="switch-link">{{ 'auth.login.noAccount' | translate }} <a routerLink="/signup">{{ 'auth.login.createOneLink' | translate }}</a></p>
+  </div>
+</div>

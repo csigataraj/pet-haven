@@ -1,0 +1,201 @@
+@use '../../../../shared/styles/page-shell-shared';
+@use '../../../../shared/styles/account-page-shared' as account;
+
+.account-page {
+  @include account.account-page(1.2rem);
+}
+
+.account-card {
+  display: grid;
+  gap: 1rem;
+  @include account.account-surface(1.2rem, 20px);
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  margin: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2f6e57, #4d9a7c);
+  color: #f4fff8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.profile-info h2 {
+  margin: 0 0 0.2rem;
+  font-size: 1.15rem;
+  color: #102733;
+}
+
+.profile-email {
+  margin: 0 0 0.3rem;
+  color: #4b6a77;
+  font-size: 0.88rem;
+}
+
+.profile-badge {
+  margin: 0;
+  display: inline-block;
+  font-size: 0.74rem;
+  background: #ebf6ef;
+  color: #2e6f5a;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.7rem;
+}
+
+.detail-tile {
+  background: #f4efe0;
+  border: 1px solid #e2d7ba;
+  border-radius: 14px;
+  padding: 0.8rem;
+}
+
+.tile-label,
+.tile-value {
+  margin: 0;
+}
+
+.tile-label {
+  color: #5e7584;
+  font-size: 0.8rem;
+}
+
+.tile-value {
+  margin-top: 0.25rem;
+  color: #102733;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.quick-links h2 {
+  margin: 0 0 0.5rem;
+  color: #163447;
+  font-size: 1rem;
+}
+
+.links-row {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.quick-link {
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.quick-link:hover {
+  opacity: 0.95;
+}
+
+.logout-btn {
+  justify-self: start;
+}
+
+.logout-btn:hover {
+  opacity: 0.95;
+}
+
+.addresses h2 {
+  margin: 0 0 0.5rem;
+  color: #163447;
+  font-size: 1rem;
+}
+
+.address-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.address-card {
+  border: 1px solid #e2d7ba;
+  border-radius: 12px;
+  background: #f4efe0;
+  padding: 0.7rem;
+}
+
+.address-card p {
+  margin: 0;
+  color: #2f4c5b;
+  font-size: 0.86rem;
+}
+
+.address-card p + p {
+  margin-top: 0.2rem;
+}
+
+.address-label {
+  font-weight: 700;
+  color: #102733;
+}
+
+.remove-address {
+  margin-top: 0.45rem;
+}
+
+.address-empty {
+  margin: 0;
+  color: #5a7381;
+}
+
+.address-form {
+  margin-top: 0.75rem;
+  border: 1px solid #e2d7ba;
+  border-radius: 14px;
+  background: #f8f3e5;
+  padding: 0.8rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.address-form h3 {
+  margin: 0;
+  color: #163447;
+  font-size: 0.95rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.address-inline {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.address-error {
+  margin: 0;
+  color: #9b4b4b;
+  font-size: 0.82rem;
+}
+
+.save-address {
+  justify-self: start;
+}
+
+@media (max-width: 640px) {
+  .address-inline {
+    grid-template-columns: 1fr;
+  }
+}
+

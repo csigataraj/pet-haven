@@ -1,0 +1,57 @@
+<div class="page-shell admin-fraud-page">
+  <app-page-header title="account.admin.fraudMonitoring" />
+
+  <section class="panel">
+    <p class="order-meta">{{ 'account.admin.blocked24h' | translate:{ count: blockedPayments24h() } }}</p>
+    <p class="order-meta">{{ 'account.admin.openCases' | translate:{ count: openFraudCases() } }} • {{ 'account.admin.escalatedCases' | translate:{ count: escalatedFraudCases() } }}</p>
+    <p class="order-meta">{{ 'account.admin.allowlistedEmails' | translate:{ count: allowlistedEmails().length } }} • {{ 'account.admin.allowlistedFingerprints' | translate:{ count: allowlistedFingerprints().length } }}</p>
+
+    <mat-form-field appearance="outline" class="fraud-filter full-width">
+      <mat-label>{{ 'account.admin.dispositionFilter' | translate }}</mat-label>
+      <mat-select [value]="fraudFilter()" (selectionChange)="setFraudFilter($event.value)">
+        <mat-option value="all">{{ 'account.admin.auditControls.all' | translate }}</mat-option>
+        @for (option of dispositionOptions; track option.value) {
+          <mat-option [value]="option.value">{{ option.labelKey | translate }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    @if (filteredBlockedEvents().length > 0) {
+      <div class="order-list">
+        @for (event of filteredBlockedEvents(); track event.id) {
+          <article class="order-row">
+            <div>
+              <p class="order-id">{{ event.email }}</p>
+              <p class="order-meta">{{ event.reason }}</p>
+              <p class="order-meta">{{ event.fingerprint }}</p>
+              <p class="order-meta">{{ 'account.admin.dispositionLabel' | translate }}: {{ labels.fraudDisposition(event.disposition) }} • {{ 'account.admin.escalatedLabel' | translate }}: {{ event.escalated ? ('account.admin.yes' | translate) : ('account.admin.no' | translate) }}</p>
+              @if (event.reviewed) {
+                <p class="order-meta">{{ 'account.admin.reviewedNote' | translate }}: {{ event.note }}</p>
+              }
+              <div class="fraud-actions">
+                <a mat-stroked-button class="action-btn small link-btn" [routerLink]="['/admin/fraud', event.id]">{{ 'account.admin.fraudActions.viewCase' | translate }}</a>
+                <button mat-stroked-button type="button" class="action-btn small" (click)="reviewFraudEvent(event.id)">{{ 'account.admin.fraudActions.review' | translate }}</button>
+                <button mat-stroked-button type="button" class="action-btn small" (click)="setFraudDisposition(event.id, 'false-positive')">{{ 'account.admin.fraudActions.falsePositive' | translate }}</button>
+                <button mat-stroked-button type="button" class="action-btn small" (click)="setFraudDisposition(event.id, 'card-testing')">{{ 'account.admin.fraudActions.cardTesting' | translate }}</button>
+                <button mat-stroked-button type="button" class="action-btn small" (click)="setFraudDisposition(event.id, 'closed')">{{ 'account.admin.fraudActions.closeCase' | translate }}</button>
+                @if (!event.escalated) {
+                  <button mat-stroked-button color="warn" type="button" class="delete-btn" (click)="setEscalated(event.id, true)">{{ 'account.admin.fraudActions.escalate' | translate }}</button>
+                } @else {
+                  <button mat-stroked-button color="warn" type="button" class="delete-btn" (click)="setEscalated(event.id, false)">{{ 'account.admin.fraudActions.deEscalate' | translate }}</button>
+                }
+                <button mat-stroked-button type="button" class="action-btn small" (click)="allowlistEventEmail(event.email)">{{ 'account.admin.fraudActions.allowlistEmail' | translate }}</button>
+                <button mat-stroked-button type="button" class="action-btn small" (click)="allowlistEventFingerprint(event.fingerprint)">{{ 'account.admin.fraudActions.allowlistFingerprint' | translate }}</button>
+                <button mat-stroked-button color="warn" type="button" class="delete-btn" (click)="unlockEventVelocity(event.email, event.fingerprint)">{{ 'account.admin.fraudActions.unlockVelocity' | translate }}</button>
+              </div>
+            </div>
+            <p class="order-meta">{{ event.timestamp | date:'short' }}</p>
+          </article>
+        }
+      </div>
+    } @else {
+      <app-empty-state titleKey="account.admin.noBlockedPayments" messageKey="account.admin.noBlockedPayments" ariaLabelKey="account.admin.noBlockedPayments" />
+    }
+  </section>
+
+  <a mat-stroked-button class="back-link" routerLink="/admin">{{ 'account.fraudCase.backToBackoffice' | translate }}</a>
+</div>

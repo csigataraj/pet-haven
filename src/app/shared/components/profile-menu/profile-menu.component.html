@@ -1,0 +1,47 @@
+<button
+  class="profile-trigger"
+  [matMenuTriggerFor]="profileMenu"
+  [attr.aria-label]="'navigation.profileMenu' | translate"
+  (menuOpened)="menuOpened()"
+  (menuClosed)="menuClosed()"
+>
+  <mat-icon class="icon">account_circle</mat-icon>
+  <mat-icon class="chevron" [class.open]="isOpen()">expand_more</mat-icon>
+</button>
+
+<mat-menu #profileMenu="matMenu" xPosition="before">
+  @if (currentUser(); as user) {
+    <div class="menu-user-wrap" mat-menu-item disabled>
+      <p class="menu-user">{{ user.name }}</p>
+      <p class="menu-email">{{ user.email }}</p>
+    </div>
+    <mat-divider></mat-divider>
+  }
+
+  @if (isAuthenticated()) {
+    <a mat-menu-item routerLink="/profile">{{ 'navigation.myProfile' | translate }}</a>
+    <a mat-menu-item routerLink="/orders">{{ 'navigation.myOrders' | translate }}</a>
+    <a mat-menu-item routerLink="/returns">{{ 'navigation.returns' | translate }}</a>
+    <a mat-menu-item routerLink="/notifications">{{ 'navigation.notifications' | translate }}</a>
+    <a mat-menu-item routerLink="/analytics">{{ 'navigation.analytics' | translate }}</a>
+    <a mat-menu-item routerLink="/admin">{{ 'navigation.admin' | translate }}</a>
+
+    <mat-divider></mat-divider>
+  }
+
+  <a mat-menu-item routerLink="/wishlist">{{ 'navigation.wishlist' | translate }}</a>
+
+  <mat-divider></mat-divider>
+
+  <a mat-menu-item routerLink="/privacy">{{ 'navigation.privacy' | translate }}</a>
+  <a mat-menu-item routerLink="/terms">{{ 'navigation.terms' | translate }}</a>
+
+  <mat-divider></mat-divider>
+
+  @if (isAuthenticated()) {
+    <button mat-menu-item type="button" (click)="logout()">{{ 'navigation.logOut' | translate }}</button>
+  } @else {
+    <a mat-menu-item routerLink="/login">{{ 'navigation.logIn' | translate }}</a>
+    <a mat-menu-item routerLink="/signup">{{ 'navigation.signUp' | translate }}</a>
+  }
+</mat-menu>

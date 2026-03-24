@@ -1,0 +1,110 @@
+<div class="shop-shell">
+  <header class="shop-nav" aria-label="Top navigation">
+    <h1 class="brand-title">{{ 'app.brand.name' | translate }}</h1>
+    <div class="actions">
+      <a
+        mat-icon-button
+        routerLink="/cart"
+        class="cart-action"
+        [attr.aria-label]="'navigation.cart' | translate"
+      >
+        <mat-icon>shopping_cart</mat-icon>
+        @if (cartTotalCount() > 0) {
+          <span class="cart-badge" aria-hidden="true">{{ cartTotalCount() }}</span>
+        }
+      </a>
+      <app-language-switcher />
+      <app-profile-menu />
+    </div>
+  </header>
+
+  <aside class="shop-aside">
+    <section class="aside-controls" aria-label="Search and sort controls">
+      <div class="search-box" role="search">
+        <mat-form-field appearance="outline" class="material-field search-field-control">
+          <mat-icon matPrefix>search</mat-icon>
+          <input
+            matInput
+            type="text"
+            [attr.aria-label]="'shop.home.searchPlaceholder' | translate"
+            [value]="searchTerm()"
+            (input)="setSearch($any($event.target).value)"
+          />
+        </mat-form-field>
+      </div>
+
+      <p class="sort-label">{{ 'shop.home.sortBy' | translate }}</p>
+      <mat-form-field appearance="outline" class="material-field sort-control">
+        <mat-select [value]="sortBy()" (selectionChange)="setSort($any($event.value))">
+          @for (option of sortOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.labelKey | translate }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </section>
+
+    <section class="aside-filters" aria-label="Category filters">
+      @for (category of categories(); track category) {
+        <button
+          mat-stroked-button
+          type="button"
+          class="filter-chip"
+          [class.active]="selectedCategory() === category"
+          (click)="setCategory(category)"
+        >{{ categoryLabel(category) }}</button>
+      }
+
+      <mat-checkbox class="stock-toggle" [checked]="inStockOnly()" (change)="toggleInStockOnly($event.checked)">
+        {{ 'shop.home.stockToggle' | translate }}
+      </mat-checkbox>
+    </section>
+
+  </aside>
+
+  <div class="shop-content">
+    <main class="shop-main" aria-label="Main content">
+      <section class="hero-panel">
+        <p class="hero-kicker">{{ 'shop.home.springCampaign' | translate }}</p>
+        <h2>{{ 'shop.home.featuredCollection' | translate }}</h2>
+        <p>{{ 'shop.home.collectionDescription' | translate }}</p>
+      </section>
+
+      <section class="cards-grid" aria-label="Product cards">
+        @for (product of productCards(); track product.sku) {
+          <article class="product-card">
+            <a class="thumb-link" [routerLink]="['/products', product.sku]" [attr.aria-label]="'shop.home.viewDetails' | translate">
+              <img class="thumb" [src]="product.imageUrl" [alt]="product.name" loading="lazy" />
+            </a>
+            <h3><a class="name-link" [routerLink]="['/products', product.sku]">{{ product.name }}</a></h3>
+            <p class="price"><app-price [value]="product.price" /></p>
+            <button
+              type="button"
+              class="card-wishlist"
+              [class.active]="shopActions.isInWishlist(product.sku)"
+              [attr.aria-label]="(shopActions.isInWishlist(product.sku) ? 'shop.home.savedProduct' : 'shop.home.saveProduct') | translate"
+              (click)="shopActions.toggleWishlistBySku(product.sku)"
+            >
+              <mat-icon aria-hidden="true">{{ shopActions.isInWishlist(product.sku) ? 'favorite' : 'favorite_border' }}</mat-icon>
+            </button>
+            <button
+              type="button"
+              class="card-add"
+              [disabled]="!shopActions.canAddToCart(product.sku, product.stock)"
+              [attr.aria-label]="'shop.home.addToCart' | translate"
+              (click)="shopActions.addToCartBySku(product.sku)"
+            >
+              <mat-icon aria-hidden="true">shopping_cart</mat-icon>
+            </button>
+          </article>
+        }
+
+        @if (productCards().length === 0) {
+          <article class="empty-catalog">
+            <h3>{{ 'shop.home.noProducts' | translate }}</h3>
+            <p>{{ 'shop.home.tryAnotherSearch' | translate }}</p>
+          </article>
+        }
+      </section>
+    </main>
+  </div>
+</div>

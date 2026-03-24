@@ -1,0 +1,40 @@
+name: QA
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Restore node_modules cache
+        id: modules-cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node20-modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies for pull requests
+        if: github.event_name == 'pull_request'
+        run: npm ci
+
+      - name: Install dependencies on push cache miss
+        if: github.event_name == 'push' && steps.modules-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Run quality gate
+        run: npm run qa

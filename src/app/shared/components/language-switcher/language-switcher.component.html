@@ -1,0 +1,31 @@
+<button
+  class="lang-trigger"
+  [matMenuTriggerFor]="langMenu"
+  [attr.aria-label]="('navigation.language' | translate) + ': ' + (currentLanguage().labelKey | translate)"
+>
+  <img
+    class="flag-icon"
+    [src]="currentLanguage().flagIcon || ''"
+    [alt]="currentLanguage().label + ' flag'"
+    width="16"
+    height="11"
+  />
+  <mat-icon class="chevron">expand_more</mat-icon>
+</button>
+
+<mat-menu #langMenu="matMenu" xPosition="before">
+  @for (lang of languages; track lang.code) {
+    <button mat-menu-item class="lang-menu-item" (click)="selectLanguage(lang.code)">
+      <span class="menu-row">
+        <img
+          class="menu-flag-icon"
+          [src]="lang.flagIcon || ''"
+          [alt]="(lang.labelKey | translate) + ' flag'"
+          width="16"
+          height="11"
+        />
+        <span class="menu-lang-label">{{ lang.labelKey | translate }}</span>
+      </span>
+    </button>
+  }
+</mat-menu>

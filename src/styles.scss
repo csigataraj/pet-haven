@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700&display=swap');
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	min-height: 100%;
+}
+
+body {
+	font-family: 'Manrope', 'Segoe UI', sans-serif;
+	color: #11212d;
+	background:
+		radial-gradient(circle at 12% 20%, rgba(255, 224, 170, 0.55), transparent 38%),
+		radial-gradient(circle at 85% 85%, rgba(88, 176, 156, 0.3), transparent 34%),
+		linear-gradient(130deg, #fffaf0 0%, #f6f0de 55%, #f1ead6 100%);
+}
+
+h1,
+h2,
+h3 {
+	font-family: 'Fraunces', 'Times New Roman', serif;
+}
+
+app-home .shop-aside {
+	background: linear-gradient(180deg, #123246 0%, #0d2535 100%);
+	color: #e8f2f6;
+	padding: 1.5rem;
+	display: grid;
+	align-content: start;
+	grid-template-rows: auto auto auto auto 1fr;
+	gap: 1.1rem;
+	min-height: 0;
+}
+
+app-home .brand-eyebrow {
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	font-size: 0.72rem;
+	margin: 0;
+	color: #9ec3d1;
+}
+
+app-home .brand-title {
+	margin: 0;
+	font-size: clamp(1.5rem, 2.2vw, 2rem);
+	line-height: 1.05;
+}
+
+app-home .brand-subtitle {
+	margin: 0;
+	color: #b7cfda;
+	font-size: 0.95rem;
+}
+
+app-home .aside-nav {
+	display: grid;
+	gap: 0.55rem;
+	margin-top: 0.8rem;
+}
+
+app-home .aside-link {
+	text-decoration: none;
+	color: #d8e9ef;
+	padding: 0.65rem 0.75rem;
+	border-radius: 12px;
+	background: rgba(255, 255, 255, 0.03);
+	transition: transform 180ms ease, background-color 180ms ease;
+}
+
+app-home .aside-link:hover,
+app-home .aside-link:focus-visible {
+	background: rgba(88, 176, 156, 0.2);
+	transform: translateX(2px);
+}
+
+

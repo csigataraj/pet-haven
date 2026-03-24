@@ -1,0 +1,82 @@
+@use '../../../../shared/styles/page-shell-shared';
+@use '../../../../shared/styles/account-page-shared' as account;
+
+.admin-fraud-page {
+  @include account.account-page(1rem);
+}
+
+.panel {
+  @include account.account-surface(0.85rem);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.fraud-filter {
+  margin-top: 0.45rem;
+  max-width: 260px;
+}
+
+.order-list {
+  margin-top: 0.65rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.order-row {
+  @include account.account-soft-row(0.6rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.order-id,
+.order-meta,
+.empty {
+  margin: 0;
+}
+
+.order-id {
+  color: #11212d;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.order-meta {
+  color: #617684;
+  font-size: 0.8rem;
+}
+
+.fraud-actions {
+  margin-top: 0.35rem;
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.action-btn.small {
+  font-size: 0.78rem;
+}
+
+.link-btn,
+.back-link {
+  text-decoration: none;
+}
+
+.empty {
+  margin-top: 0.7rem;
+  color: #5a6f7d;
+}
+
+.back-link {
+  justify-self: start;
+}
+
+@media (max-width: 840px) {
+  .order-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

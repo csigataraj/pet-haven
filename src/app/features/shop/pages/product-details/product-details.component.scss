@@ -1,0 +1,281 @@
+@use '../../../../shared/styles/page-shell-shared';
+
+.details-page {
+  margin-bottom: 1rem;
+}
+
+app-page-header {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.details-card {
+  display: grid;
+  gap: 1rem;
+  background: #fffdf6;
+  border: 1px solid #e3dac1;
+  border-radius: 20px;
+  padding: 1.2rem;
+}
+
+.gallery img {
+  width: 100%;
+  height: min(320px, 45vw);
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid #e3dac1;
+}
+
+.chip {
+  display: inline-block;
+  margin: 0;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: #ebf6ef;
+  color: #2e6f5a;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.summary h1 {
+  margin: 0.55rem 0 0.3rem;
+  color: #11212d;
+}
+
+.description {
+  margin: 0;
+  color: #3d5563;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.7rem;
+}
+
+.stat {
+  background: #f4efe0;
+  border: 1px solid #e2d7ba;
+  border-radius: 14px;
+  padding: 0.8rem;
+}
+
+.label,
+.value {
+  margin: 0;
+}
+
+.label {
+  color: #5e7584;
+  font-size: 0.8rem;
+}
+
+.value {
+  margin-top: 0.3rem;
+  color: #102733;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.highlights h2 {
+  margin: 0 0 0.5rem;
+  color: #163447;
+}
+
+.highlights ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #2a4a5b;
+}
+
+.highlights li + li {
+  margin-top: 0.35rem;
+}
+
+.purchase {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.cart-btn {
+  border: 1px solid #2f6e57;
+  background: linear-gradient(135deg, #2f6e57, #4d9a7c);
+  color: #f4fff8;
+  border-radius: 999px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.wish-btn {
+  border: 1px solid #d5c9ab;
+  background: #f9f5e8;
+  color: #5e4a2a;
+  border-radius: 999px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.cart-btn:disabled {
+  border-color: #d6ccba;
+  background: #efe9db;
+  color: #7f7769;
+  cursor: not-allowed;
+}
+
+.stock-note {
+  margin: 0;
+  color: #8f4a4a;
+  font-size: 0.85rem;
+}
+
+.cart-note {
+  margin: 0;
+  color: #2f5e4d;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.cart-note:hover,
+.cart-note:focus-visible {
+  text-decoration: underline;
+}
+
+.related h2 {
+  margin: 0 0 0.55rem;
+  color: #163447;
+}
+
+.reviews {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.reviews-head h2,
+.reviews-head p {
+  margin: 0;
+}
+
+.reviews-head p {
+  margin-top: 0.35rem;
+  color: #4b6070;
+  font-size: 0.9rem;
+}
+
+.review-form {
+  display: grid;
+  gap: 0.65rem;
+  border: 1px solid #dfd5bb;
+  border-radius: 14px;
+  background: #f8f3e5;
+  padding: 0.8rem;
+}
+
+.review-form label {
+  display: grid;
+  gap: 0.3rem;
+  color: #213a4a;
+  font-size: 0.88rem;
+}
+
+.review-form input,
+.review-form select,
+.review-form textarea {
+  border: 1px solid #d4c8aa;
+  border-radius: 10px;
+  padding: 0.5rem 0.6rem;
+  font: inherit;
+  background: #fff;
+}
+
+.review-error {
+  margin: 0;
+  color: #9c4d4d;
+  font-size: 0.85rem;
+}
+
+.review-btn {
+  justify-self: start;
+  border: 1px solid #2f6e57;
+  background: linear-gradient(135deg, #2f6e57, #4d9a7c);
+  color: #f4fff8;
+  border-radius: 999px;
+  padding: 0.52rem 0.95rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.review-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.review-card {
+  border: 1px solid #e3dac1;
+  border-radius: 12px;
+  background: #fffdfa;
+  padding: 0.7rem;
+}
+
+.review-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.review-card p {
+  margin: 0.45rem 0 0;
+  color: #2e4c5d;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.65rem;
+}
+
+.related-card {
+  background: #f7f3e6;
+  border: 1px solid #dfd5bb;
+  border-radius: 14px;
+  padding: 0.75rem;
+}
+
+.related-card h3 {
+  margin: 0.3rem 0;
+  color: #102733;
+  font-size: 0.98rem;
+}
+
+.related-sku,
+.related-meta {
+  margin: 0;
+  color: #4b6070;
+  font-size: 0.8rem;
+}
+
+.view-link {
+  display: inline-block;
+  margin-top: 0.55rem;
+  color: #1b4b5f;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid #b8cdd6;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+}
+
+.view-link:hover,
+.view-link:focus-visible {
+  background: #edf4f7;
+  text-decoration: none;
+}
+
+.missing {
+  text-align: center;
+}

@@ -1,0 +1,127 @@
+<div class="page-shell details-page">
+  <app-page-header title="shop.productDetails.pageTitle">
+    <app-profile-menu />
+  </app-page-header>
+
+  @if (product(); as item) {
+    <main class="details-card" aria-label="Product details card">
+      <section class="gallery" aria-label="Product image">
+        <img [src]="item.imageUrl" [alt]="item.name" loading="lazy" />
+      </section>
+
+      <section class="summary">
+        <a class="chip" [routerLink]="['/']" [queryParams]="{ category: item.category }">{{ item.category }}</a>
+        <h1>{{ item.name }}</h1>
+        <p class="description">{{ item.description }}</p>
+      </section>
+
+      <section class="stats" aria-label="Product stats">
+        <div class="stat">
+          <p class="label">{{ 'shop.productDetails.sku' | translate }}</p>
+          <p class="value">{{ item.sku }}</p>
+        </div>
+        <div class="stat">
+          <p class="label">{{ 'shop.productDetails.price' | translate }}</p>
+          <p class="value"><app-price [value]="item.price" /></p>
+        </div>
+        <div class="stat">
+          <p class="label">{{ 'shop.productDetails.stock' | translate }}</p>
+          <p class="value">{{ item.stock }} {{ 'shop.productDetails.units' | translate }}</p>
+        </div>
+      </section>
+
+      <section class="highlights" aria-label="Product highlights">
+        <h2>{{ 'shop.productDetails.highlights' | translate }}</h2>
+        <ul>
+          @for (highlight of item.highlights; track highlight) {
+            <li>{{ highlight }}</li>
+          }
+        </ul>
+      </section>
+
+      <section class="purchase" aria-label="Purchase controls">
+        <button mat-flat-button color="primary" type="button" class="cart-btn" [disabled]="!canAddToCart()" (click)="addToCart()">{{ 'shop.productDetails.addToCart' | translate }}</button>
+        <button mat-stroked-button type="button" class="wish-btn" (click)="toggleWishlist()">
+          @if (isWishlisted()) { {{ 'shop.productDetails.savedToWishlist' | translate }} } @else { {{ 'shop.productDetails.saveToWishlist' | translate }} }
+        </button>
+        @if (!canAddToCart()) {
+          <p class="stock-note">{{ 'shop.productDetails.stockLimitReached' | translate }}</p>
+        }
+        <a mat-stroked-button class="cart-note" routerLink="/cart">{{ 'shop.productDetails.reviewCart' | translate }}</a>
+      </section>
+
+      <section class="related" aria-label="Related products">
+        <h2>{{ 'shop.productDetails.relatedProducts' | translate }}</h2>
+        <div class="related-grid">
+          @for (related of relatedProducts(); track related.sku) {
+            <article class="related-card">
+              <p class="related-sku">{{ related.sku }}</p>
+              <h3>{{ related.name }}</h3>
+              <p class="related-meta">{{ related.category }} - <app-price [value]="related.price" /></p>
+              <a [routerLink]="['/products', related.sku]" class="view-link">{{ 'shop.home.viewDetails' | translate }}</a>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="reviews" aria-label="Product reviews">
+        <div class="reviews-head">
+          <h2>{{ 'shop.productDetails.ratingsAndReviews' | translate }}</h2>
+          @if (reviews().length > 0) {
+            <p>{{ 'shop.productDetails.averageRating' | translate:{ rating: averageRating().toFixed(1), count: reviews().length } }}</p>
+          } @else {
+            <p>{{ 'shop.productDetails.noReviews' | translate }}</p>
+          }
+        </div>
+
+        <form class="review-form" (submit)="$event.preventDefault(); submitReview()">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'shop.productDetails.reviewForm.name' | translate }}</mat-label>
+            <input matInput type="text" [value]="reviewerName()" (input)="setReviewerName($any($event.target).value)" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'shop.productDetails.reviewForm.rating' | translate }}</mat-label>
+            <mat-select [value]="reviewerRating()" (selectionChange)="setReviewerRating($any($event.value))">
+              <mat-option [value]="5">{{ 'shop.productDetails.reviewForm.excellent' | translate }}</mat-option>
+              <mat-option [value]="4">{{ 'shop.productDetails.reviewForm.good' | translate }}</mat-option>
+              <mat-option [value]="3">{{ 'shop.productDetails.reviewForm.average' | translate }}</mat-option>
+              <mat-option [value]="2">{{ 'shop.productDetails.reviewForm.fair' | translate }}</mat-option>
+              <mat-option [value]="1">{{ 'shop.productDetails.reviewForm.poor' | translate }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'shop.productDetails.reviewForm.review' | translate }}</mat-label>
+            <textarea matInput rows="3" [value]="reviewerComment()" (input)="setReviewerComment($any($event.target).value)"></textarea>
+          </mat-form-field>
+          @if (reviewError()) {
+            <p class="review-error">{{ reviewError() }}</p>
+          }
+          <button mat-flat-button color="primary" type="submit" class="review-btn">{{ 'shop.productDetails.reviewForm.submit' | translate }}</button>
+        </form>
+
+        @if (reviews().length > 0) {
+          <div class="review-list">
+            @for (review of reviews(); track review.id) {
+              <article class="review-card">
+                <div class="review-meta">
+                  <strong>{{ review.author }}</strong>
+                  <span>{{ review.rating }}/5</span>
+                </div>
+                <p>{{ review.comment }}</p>
+              </article>
+            }
+          </div>
+        }
+      </section>
+    </main>
+  } @else {
+    <app-empty-state
+      titleKey="shop.productDetails.notFound"
+      messageKey="shop.productDetails.notFoundMessage"
+      [messageParams]="{ sku: sku() }"
+      actionLabelKey="shop.productDetails.backToCatalog"
+      actionLink="/"
+      ariaLabelKey="shop.productDetails.notFound"
+    />
+  }
+</div>

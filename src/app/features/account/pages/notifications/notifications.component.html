@@ -1,0 +1,20 @@
+<div class="page-shell notifications-page">
+  <app-page-header title="account.notifications.pageTitle" />
+
+  @if (notifications().length > 0) {
+    <button mat-stroked-button type="button" class="clear-btn" (click)="clearAll()">{{ 'account.notifications.clearAll' | translate }}</button>
+
+    <section class="notifications-list" [attr.aria-label]="'account.notifications.notificationHistory' | translate">
+      @for (note of notifications(); track note.id) {
+        <article class="note-card">
+          <p class="note-meta">{{ note.createdAt | date:'medium' }} - {{ labels.notificationType(note.type) }}</p>
+          <h2>{{ note.subject }}</h2>
+          <p class="note-to">{{ 'account.notifications.to' | translate:{ email: note.to } }}</p>
+          <p class="note-preview">{{ note.preview }}</p>
+        </article>
+      }
+    </section>
+  } @else {
+    <app-empty-state titleKey="account.notifications.empty" messageKey="account.notifications.emptyMessage" ariaLabelKey="account.notifications.empty" />
+  }
+</div>

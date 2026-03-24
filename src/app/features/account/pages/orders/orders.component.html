@@ -1,0 +1,57 @@
+<div class="page-shell orders-page">
+  <app-page-header title="account.orders.pageTitle" />
+
+  @if (currentUser(); as user) {
+    <p class="subtitle">{{ 'account.orders.recentOrders' | translate:{ name: user.name } }}</p>
+  }
+
+  @if (orders().length > 0) {
+    <section class="orders-list" [attr.aria-label]="'account.orders.pageTitle' | translate">
+      @for (order of orders(); track order.id) {
+        <article class="order-card">
+          <div class="order-main">
+            <p class="order-id">{{ 'account.orders.orderId' | translate:{ id: order.id } }}</p>
+            <p class="order-date">{{ 'account.orders.placedOn' | translate:{ date: order.date } }}</p>
+            @if (order.status !== 'Cancelled' && !canTrackReturn(order.status)) {
+              <p class="order-date">{{ 'account.orders.eta' | translate:{ date: order.etaDate, code: order.trackingCode } }}</p>
+              <div class="tracking" [attr.aria-label]="'account.orders.tracking' | translate">
+                @for (stage of trackingStages; track stage) {
+                  <span class="track-step" [class.active]="isStageActive(order.status, stage)">{{ ('account.orders.' + stage.toLowerCase()) | translate }}</span>
+                }
+              </div>
+            } @else if (canTrackReturn(order.status)) {
+              <p class="order-date">{{ 'account.orders.returnStatus' | translate:{ status: labels.orderStatus(order.status), code: order.trackingCode } }}</p>
+              @if (order.returnReason) {
+                <p class="order-date">{{ 'account.orders.returnReason' | translate:{ reason: order.returnReason } }}</p>
+              }
+            } @else {
+              <p class="order-date">{{ 'account.orders.cancelled' | translate }}</p>
+            }
+
+            @if (order.paymentAuthCode) {
+              <p class="order-date">{{ 'account.orders.payment' | translate:{ authCode: order.paymentAuthCode || '', last4: order.paymentCardLast4 || '' } }}</p>
+            } @else {
+              <p class="order-date">{{ 'account.orders.paymentOnDelivery' | translate }}</p>
+            }
+
+            <div class="order-actions">
+              <a mat-stroked-button class="order-action" [routerLink]="['/orders', order.id]">{{ 'account.orders.orderDetails' | translate }}</a>
+              @if (canCancel(order.status)) {
+                <button mat-stroked-button color="warn" type="button" class="order-action danger" (click)="cancelOrder(order.id)">{{ 'account.orders.cancelOrder' | translate }}</button>
+              }
+              @if (canRequestReturn(order.status)) {
+                <button mat-stroked-button type="button" class="order-action" (click)="requestReturn(order.id)">{{ 'account.orders.requestReturn' | translate }}</button>
+              }
+            </div>
+          </div>
+          <p class="order-total"><app-price [value]="order.total" [currencyCode]="order.currencyCode || 'USD'" /></p>
+          <p class="order-status" [class.processing]="order.status === 'Processing'" [class.shipped]="order.status === 'Shipped'" [class.delivered]="order.status === 'Delivered'">
+            {{ labels.orderStatus(order.status) }}
+          </p>
+        </article>
+      }
+    </section>
+  } @else {
+    <app-empty-state titleKey="account.orders.noOrders" messageKey="account.orders.noOrdersMessage" ariaLabelKey="account.orders.noOrders" />
+  }
+</div>

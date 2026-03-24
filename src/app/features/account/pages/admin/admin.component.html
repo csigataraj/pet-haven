@@ -1,0 +1,165 @@
+<div class="page-shell admin-page">
+  <app-page-header title="account.admin.pageTitle" />
+
+  <section class="backend-status" [attr.aria-label]="'account.admin.backendStatus' | translate">
+    <p class="status-label">{{ 'account.admin.apiStatus' | translate }}</p>
+    @if (backendIsHealthy()) {
+      <span class="status-indicator healthy">{{ 'account.admin.healthy' | translate }}</span>
+    } @else if (backendIsDegraded()) {
+      <span class="status-indicator degraded">{{ 'account.admin.degraded' | translate }}</span>
+    } @else if (backendIsOffline()) {
+      <span class="status-indicator offline">{{ 'account.admin.offline' | translate }}</span>
+    } @else {
+      <span class="status-indicator disabled">{{ 'account.admin.disabled' | translate }}</span>
+    }
+  </section>
+
+  <section class="admin-metrics" [attr.aria-label]="'account.admin.metrics' | translate">
+    <article class="metric-card">
+      <p class="metric-label">{{ 'account.admin.orderCount' | translate }}</p>
+      <p class="metric-value">{{ orderCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <p class="metric-label">{{ 'account.admin.productCount' | translate }}</p>
+      <p class="metric-value">{{ products().length }}</p>
+    </article>
+    <article class="metric-card">
+      <p class="metric-label">{{ 'account.admin.lowStockCount' | translate }}</p>
+      <p class="metric-value">{{ lowStockProducts().length }}</p>
+    </article>
+  </section>
+
+  <section class="admin-grid">
+    <article class="panel">
+      <h2>{{ 'account.admin.orderManagement' | translate }}</h2>
+
+      @if (orders().length > 0) {
+        <div class="order-list">
+          @for (order of orders(); track order.id) {
+            <article class="order-row">
+              <div>
+                <p class="order-id">{{ order.id }}</p>
+                <p class="order-meta">{{ order.customerEmail }}</p>
+                <p class="order-meta"><app-price [value]="order.total" [currencyCode]="order.currencyCode" /></p>
+                @if (order.paymentAuthCode) {
+                  <p class="order-meta">{{ order.paymentAuthCode }} / **** {{ order.paymentCardLast4 }}</p>
+                } @else {
+                  <p class="order-meta">{{ 'account.admin.cashOnDelivery' | translate }}</p>
+                }
+                @if (order.returnReason) {
+                  <p class="order-meta">{{ 'account.admin.returnReason' | translate }}: {{ order.returnReason }}</p>
+                }
+              </div>
+              <div class="status-controls">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ 'account.admin.orderStatus.status' | translate }}</mat-label>
+                  <mat-select [value]="order.status" (selectionChange)="setOrderStatus(order.id, $event.value)">
+                    @for (option of orderStatusOptions; track option.value) {
+                      <mat-option [value]="option.value">{{ option.labelKey | translate }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+                @if (order.status === 'ReturnRequested') {
+                  <button mat-stroked-button type="button" class="action-btn small" (click)="approveReturn(order.id)">{{ 'account.admin.orderActions.approveReturn' | translate }}</button>
+                }
+                @if (order.status === 'ReturnApproved') {
+                  <button mat-stroked-button type="button" class="action-btn small" (click)="markReturnInTransit(order.id)">{{ 'account.admin.orderActions.markInTransit' | translate }}</button>
+                  <button mat-stroked-button type="button" class="action-btn small" (click)="markReturnReceived(order.id)">{{ 'account.admin.orderActions.markReceived' | translate }}</button>
+                }
+                @if (order.status === 'ReturnApproved' || order.status === 'Returned') {
+                  <button mat-stroked-button type="button" class="action-btn small" (click)="markRefunded(order.id)">{{ 'account.admin.orderActions.markRefunded' | translate }}</button>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <p class="empty">{{ 'account.admin.noOrders' | translate }}</p>
+      }
+    </article>
+
+    <article class="panel">
+      <h2>{{ 'account.admin.inventoryManagement' | translate }}</h2>
+
+      <form class="create-product" [formGroup]="createProductForm" (ngSubmit)="createProduct()" novalidate>
+        <h3>{{ 'account.admin.addProduct' | translate }}</h3>
+        <div class="grid-two">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'account.admin.productForm.sku' | translate }}</mat-label>
+            <input matInput type="text" formControlName="sku" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'account.admin.productForm.name' | translate }}</mat-label>
+            <input matInput type="text" formControlName="name" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'account.admin.productForm.category' | translate }}</mat-label>
+            <input matInput type="text" formControlName="category" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'account.admin.productForm.imageUrl' | translate }}</mat-label>
+            <input matInput type="text" formControlName="imageUrl" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'account.admin.productForm.price' | translate }}</mat-label>
+            <input matInput type="number" min="0" step="0.01" formControlName="price" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'account.admin.productForm.stock' | translate }}</mat-label>
+            <input matInput type="number" min="0" formControlName="stock" />
+          </mat-form-field>
+        </div>
+        @if (productError()) {
+          <p class="error">{{ productError() }}</p>
+        }
+        <button mat-raised-button color="primary" type="submit" class="action-btn">{{ 'account.admin.productForm.createProduct' | translate }}</button>
+      </form>
+
+      <div class="inventory-list">
+        @for (product of products(); track product.sku) {
+          <article class="inventory-row">
+            <div>
+              <p class="order-id">{{ product.sku }}</p>
+              <p class="order-meta">{{ product.name }}</p>
+            </div>
+            <div class="inventory-controls">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'account.admin.productControls.name' | translate }}</mat-label>
+                <input matInput type="text" [value]="product.name" (change)="setProductName(product.sku, $any($event.target).value)" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'account.admin.productControls.price' | translate }}</mat-label>
+                <input matInput type="number" min="0" step="0.01" [value]="product.price" (change)="setProductPrice(product.sku, $any($event.target).value)" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'account.admin.productControls.stock' | translate }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="0"
+                  [value]="product.stock"
+                  (change)="setProductStock(product.sku, $any($event.target).value)"
+                />
+              </mat-form-field>
+              <button mat-stroked-button color="warn" type="button" class="delete-btn" (click)="removeProduct(product.sku)">{{ 'account.admin.productControls.delete' | translate }}</button>
+            </div>
+          </article>
+        }
+      </div>
+    </article>
+
+    <article class="panel">
+      <h2>{{ 'account.admin.fraudMonitoring' | translate }}</h2>
+      <p class="order-meta">{{ 'account.admin.blocked24h' | translate:{ count: blockedPayments24h() } }}</p>
+      <p class="order-meta">{{ 'account.admin.openCases' | translate:{ count: openFraudCases() } }}</p>
+      <a mat-stroked-button class="link-btn" routerLink="/admin/fraud-monitoring">{{ 'account.admin.fraudActions.viewCase' | translate }}</a>
+    </article>
+
+    <article class="panel">
+      <h2>{{ 'account.admin.auditTrail' | translate }}</h2>
+      <p class="order-meta">{{ 'account.admin.integrity' | translate:{ status: (auditChainValid() ? ('account.admin.integrityVerified' | translate) : ('account.admin.integrityTampered' | translate)) } }}</p>
+      <p class="order-meta">{{ 'account.admin.matchingEntries' | translate:{ count: auditEntryCount() } }}</p>
+      <a mat-stroked-button class="link-btn" routerLink="/admin/audit">{{ 'account.admin.auditTrail' | translate }}</a>
+    </article>
+  </section>
+</div>

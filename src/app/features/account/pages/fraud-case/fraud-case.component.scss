@@ -1,0 +1,61 @@
+@use '../../../../shared/styles/page-shell-shared';
+@use '../../../../shared/styles/account-page-shared' as account;
+
+.fraud-case-page {
+  @include account.account-page(0.8rem);
+}
+
+.case-card {
+  @include account.account-surface(0.85rem);
+  display: grid;
+  gap: 0.45rem;
+}
+
+.case-id,
+.meta {
+  margin: 0;
+}
+
+.case-id {
+  color: #5e7584;
+  font-size: 0.8rem;
+}
+
+.case-card h2 {
+  margin: 0.2rem 0;
+  color: #11212d;
+  font-size: 1.05rem;
+}
+
+.meta {
+  color: #5a7381;
+  font-size: 0.85rem;
+}
+
+.review-block {
+  margin-top: 0.2rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.actions {
+  margin-top: 0.35rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.action-btn {
+  font-size: 0.82rem;
+}
+
+.delete-btn {
+  font-size: 0.82rem;
+}
+
+.back-link {
+  justify-self: start;
+  text-decoration: none;
+}

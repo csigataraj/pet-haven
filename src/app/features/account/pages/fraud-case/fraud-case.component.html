@@ -1,0 +1,53 @@
+<div class="page-shell fraud-case-page">
+  <app-page-header title="account.fraudCase.pageTitle" />
+
+  @if (event(); as currentEvent) {
+    <section class="case-card" [attr.aria-label]="'account.fraudCase.caseDetails' | translate">
+      <p class="case-id">{{ currentEvent.id }}</p>
+      <h2>{{ currentEvent.reason }}</h2>
+      <p class="meta">{{ 'account.fraudCase.timestamp' | translate:{ date: ((currentEvent.timestamp | date:'medium') || '') } }}</p>
+      <p class="meta">{{ 'account.fraudCase.email' | translate:{ email: currentEvent.email } }}</p>
+      <p class="meta">{{ 'account.fraudCase.fingerprint' | translate:{ fingerprint: currentEvent.fingerprint } }}</p>
+      <p class="meta">{{ 'account.fraudCase.reviewed' | translate:{ status: (currentEvent.reviewed ? ('account.fraudCase.yes' | translate) : ('account.fraudCase.no' | translate)) } }}</p>
+      <p class="meta">{{ 'account.fraudCase.escalated' | translate:{ status: (currentEvent.escalated ? ('account.fraudCase.yes' | translate) : ('account.fraudCase.no' | translate)) } }}</p>
+      @if (currentEvent.note) {
+        <p class="meta">{{ 'account.fraudCase.note' | translate:{ text: currentEvent.note } }}</p>
+      }
+
+      <mat-form-field appearance="outline" class="review-block full-width">
+        <mat-label>{{ 'account.fraudCase.disposition' | translate }}</mat-label>
+        <mat-select
+          [value]="currentEvent.disposition"
+          (selectionChange)="setDisposition(currentEvent.id, $event.value)"
+        >
+          @for (option of dispositionOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.labelKey | translate }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="review-block full-width">
+        <mat-label>{{ 'account.fraudCase.reviewNote' | translate }}</mat-label>
+        <textarea matInput #reviewNote rows="3" [value]="currentEvent.note"></textarea>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" type="button" class="action-btn" (click)="reviewCase(currentEvent.id, reviewNote.value)">{{ 'account.fraudCase.saveReview' | translate }}</button>
+        @if (!currentEvent.escalated) {
+          <button mat-stroked-button color="warn" type="button" class="delete-btn" (click)="setEscalated(currentEvent.id, true)">{{ 'account.fraudCase.escalateCase' | translate }}</button>
+        } @else {
+          <button mat-stroked-button color="warn" type="button" class="delete-btn" (click)="setEscalated(currentEvent.id, false)">{{ 'account.fraudCase.deEscalateCase' | translate }}</button>
+        }
+        <button mat-stroked-button type="button" class="action-btn" (click)="allowlistEmail(currentEvent.email)">{{ 'account.fraudCase.allowlistEmail' | translate }}</button>
+        <button mat-stroked-button type="button" class="action-btn" (click)="allowlistFingerprint(currentEvent.fingerprint)">{{ 'account.fraudCase.allowlistFingerprint' | translate }}</button>
+        <button mat-stroked-button color="warn" type="button" class="delete-btn" (click)="unlockVelocity(currentEvent.email, currentEvent.fingerprint)">{{ 'account.fraudCase.unlockVelocity' | translate }}</button>
+      </div>
+    </section>
+
+    <a mat-stroked-button class="back-link" routerLink="/admin">{{ 'account.fraudCase.backToBackoffice' | translate }}</a>
+  } @else {
+    <app-empty-state titleKey="account.fraudCase.caseNotFound" messageKey="account.fraudCase.caseNotFoundMessage" ariaLabelKey="account.fraudCase.caseNotFound" />
+
+    <a mat-stroked-button class="back-link" routerLink="/admin">{{ 'account.fraudCase.backToBackoffice' | translate }}</a>
+  }
+</div>

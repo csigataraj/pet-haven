@@ -1,0 +1,27 @@
+<div class="page-shell wishlist-page">
+  <app-page-header title="shop.wishlist.pageTitle" />
+
+  @if (wishlistItems().length > 0) {
+    <section class="wishlist-grid" aria-label="Wishlist products">
+      @for (item of wishlistItems(); track item.sku) {
+        <article class="wishlist-card">
+          <p class="sku">{{ item.sku }}</p>
+          <h2>{{ item.name }}</h2>
+          <p class="meta">{{ item.category }}</p>
+          <p class="price"><app-price [value]="item.price" /></p>
+          <div class="actions">
+            <button mat-flat-button color="primary" type="button" class="primary" (click)="moveToCart(item.sku)">{{ 'shop.wishlist.moveToCart' | translate }}</button>
+            <button mat-stroked-button type="button" class="secondary" (click)="remove(item.sku)">{{ 'shop.wishlist.remove' | translate }}</button>
+            <a mat-stroked-button class="link" [routerLink]="['/products', item.sku]">{{ 'shop.home.viewDetails' | translate }}</a>
+          </div>
+        </article>
+      }
+    </section>
+  } @else {
+    <section class="empty-state" aria-label="Empty wishlist">
+      <h2>{{ 'shop.wishlist.empty' | translate }}</h2>
+      <p>{{ 'shop.wishlist.emptyMessage' | translate }}</p>
+      <a mat-stroked-button class="secondary" routerLink="/">{{ 'shop.checkout.browseProducts' | translate }}</a>
+    </section>
+  }
+</div>
