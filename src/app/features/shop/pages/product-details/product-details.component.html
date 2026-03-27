@@ -83,11 +83,11 @@
         </div>
 
         <form class="review-form" (submit)="$event.preventDefault(); submitReview()">
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>{{ 'shop.productDetails.reviewForm.name' | translate }}</mat-label>
             <input matInput type="text" [value]="reviewerName()" (input)="setReviewerName($any($event.target).value)" />
           </mat-form-field>
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>{{ 'shop.productDetails.reviewForm.rating' | translate }}</mat-label>
             <mat-select [value]="reviewerRating()" (selectionChange)="setReviewerRating($any($event.value))">
               <mat-option [value]="5">{{ 'shop.productDetails.reviewForm.excellent' | translate }}</mat-option>
@@ -97,7 +97,7 @@
               <mat-option [value]="1">{{ 'shop.productDetails.reviewForm.poor' | translate }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>{{ 'shop.productDetails.reviewForm.review' | translate }}</mat-label>
             <textarea matInput rows="3" [value]="reviewerComment()" (input)="setReviewerComment($any($event.target).value)"></textarea>
           </mat-form-field>
