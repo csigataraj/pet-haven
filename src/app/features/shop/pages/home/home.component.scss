@@ -229,6 +229,16 @@ button,
   margin-bottom: calc(-1rem + 4px);
 }
 
+.sort-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.mobile-filter-control {
+  display: none;
+}
+
 .sort-control {
   width: 200px;
   margin-bottom: -1.25em;
@@ -240,6 +250,10 @@ button,
   margin: 0;
   font-weight: 500;
   white-space: nowrap;
+}
+
+.mobile-sort-prefix {
+  display: none;
 }
 
 .hero-kicker {
@@ -526,33 +540,48 @@ button,
 @media (max-width: 900px) {
   .shop-shell {
     grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: auto;
+    overflow: visible;
+  }
+
+  .shop-content,
+  .shop-main {
+    overflow: visible;
   }
 
   .shop-aside {
-    border-bottom: 1px solid #ddcfaa;
-    padding: 0.9rem 1rem;
-  }
-
-  .shop-aside::after {
     display: none;
   }
 
-  .aside-filters {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 0.45rem;
+  .shop-main {
+    border-top-left-radius: 0;
+    padding: 1rem;
   }
 
-  .aside-controls {
-    grid-template-columns: 1fr 220px;
-    align-items: start;
+  .sort-toolbar {
+    justify-content: space-between;
+    margin: 0;
+    gap: 0.6rem;
   }
 
-  .search-field-control {
-    max-width: none;
+  .mobile-filter-control {
+    display: block;
+    width: 220px;
   }
 
-  .sort-control {
-    max-width: none;
+  .sort-toolbar-right {
+    margin-left: auto;
+  }
+
+  .sort-toolbar-right .sort-control {
+    width: min(100%, 220px);
+    margin-bottom: 0;
+  }
+
+  .cards-grid {
+    overflow: visible;
+    padding-right: 0;
   }
 }
 
@@ -562,18 +591,59 @@ button,
   }
 
   .shop-shell {
-    height: calc(100dvh - 1rem);
+    border-radius: 18px;
   }
 
   .shop-nav {
     padding: 0.9rem 1rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .brand-title {
+    font-size: 1.35rem;
+    width: 100%;
   }
 
   .actions {
+    width: 100%;
     justify-content: flex-end;
   }
 
-  .aside-controls {
+  .sort-toolbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    align-items: start;
+  }
+
+  .sort-toolbar-right {
+    width: auto;
+    margin-left: 0;
+    gap: 0.45rem;
+    justify-content: flex-end;
+  }
+
+  .mobile-filter-control {
+    width: 100%;
+  }
+
+  .sort-label {
+    display: none;
+  }
+
+  .mobile-sort-prefix {
+    display: inline;
+    margin-right: 0.35rem;
+    color: #5a7381;
+    font-weight: 500;
+  }
+
+  .sort-toolbar-right .sort-control {
+    width: 100%;
+  }
+
+  .cards-grid {
     grid-template-columns: 1fr;
   }
 }

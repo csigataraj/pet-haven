@@ -48,6 +48,9 @@ export class HomeComponent {
   readonly isAuthenticated = this.authService.isAuthenticated;
 
   readonly sortOptions = SORT_OPTIONS;
+  readonly selectedSortOptionLabelKey = computed(
+    () => this.sortOptions.find((option) => option.value === this.sortBy())?.labelKey ?? this.sortOptions[0].labelKey
+  );
 
   readonly selectedCategories = signal(new Set<string>());
   readonly searchTerm = signal('');
@@ -55,6 +58,7 @@ export class HomeComponent {
   readonly showWishlistAuthModal = signal(false);
 
   readonly categories = computed(() => getProductCategories(this.products(), false));
+  readonly mobileSelectedFilters = computed(() => [...this.selectedCategories()]);
   readonly filterGroups = computed(() => {
     const categories = this.categories();
 
@@ -121,6 +125,10 @@ export class HomeComponent {
 
   setSort(value: string): void {
     this.sortBy.set(value as SortOption);
+  }
+
+  setMobileFilters(values: string[]): void {
+    this.selectedCategories.set(new Set(values ?? []));
   }
 
   onWishlistClick(sku: string): void {

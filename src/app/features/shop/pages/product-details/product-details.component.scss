@@ -16,6 +16,34 @@ app-page-header {
   @include theme.surface-card(20px, 1.2rem);
 }
 
+.gallery {
+  grid-area: gallery;
+}
+
+.summary {
+  grid-area: summary;
+}
+
+.stats {
+  grid-area: stats;
+}
+
+.highlights {
+  grid-area: highlights;
+}
+
+.purchase {
+  grid-area: purchase;
+}
+
+.related {
+  grid-area: related;
+}
+
+.reviews {
+  grid-area: reviews;
+}
+
 .gallery img {
   width: 100%;
   height: min(320px, 45vw);
@@ -291,4 +319,41 @@ app-page-header {
 
 .missing {
   text-align: center;
+}
+
+@media (min-width: 1600px) {
+  .details-page {
+    max-width: 1480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .details-card {
+    grid-template-columns: minmax(420px, 520px) minmax(0, 1fr);
+    grid-template-areas:
+      'gallery summary'
+      'stats stats'
+      'highlights purchase'
+      'related related'
+      'reviews reviews';
+    align-items: start;
+    gap: 1.1rem;
+  }
+
+  .gallery img {
+    height: 340px;
+  }
+
+  .highlights,
+  .purchase {
+    min-height: 100%;
+  }
+
+  .stats {
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+  }
+
+  .related-grid {
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+  }
 }
