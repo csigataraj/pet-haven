@@ -1,10 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 import { ChatbotService, ChatMessage } from '../../../core';
 import { TranslatePipe } from '../translate.pipe';
+
+interface MessageSegment { type: 'text' | 'sku'; value: string }
 
 @Component({
   selector: 'app-chatbot',
@@ -12,6 +15,7 @@ import { TranslatePipe } from '../translate.pipe';
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     MatIconModule,
     TranslatePipe
   ],
@@ -53,7 +57,19 @@ import { TranslatePipe } from '../translate.pipe';
           }
           @for (msg of messages(); track $index) {
             <div [class]="'chat-message ' + msg.role">
-              <div class="message-content">{{ msg.content }}</div>
+              <div class="message-content">
+                @if (msg.role === 'assistant') {
+                  @for (seg of parseSegments(msg.content); track $index) {
+                    @if (seg.type === 'sku') {
+                      <a class="product-link" [routerLink]="['/products', seg.value]" (click)="isOpen.set(false)">{{ seg.value }}</a>
+                    } @else {
+                      {{ seg.value }}
+                    }
+                  }
+                } @else {
+                  {{ msg.content }}
+                }
+              </div>
               @if (msg.timestamp) {
                 <div class="message-time">{{ msg.timestamp | date:'short' }}</div>
               }
@@ -97,6 +113,24 @@ export class ChatbotComponent {
 
   toggleChat(): void {
     this.isOpen.update((opened) => !opened);
+  }
+
+  parseSegments(content: string): MessageSegment[] {
+    const skuPattern = /PET-\d+/g;
+    const segments: MessageSegment[] = [];
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+    while ((match = skuPattern.exec(content)) !== null) {
+      if (match.index > lastIndex) {
+        segments.push({ type: 'text', value: content.slice(lastIndex, match.index) });
+      }
+      segments.push({ type: 'sku', value: match[0] });
+      lastIndex = match.index + match[0].length;
+    }
+    if (lastIndex < content.length) {
+      segments.push({ type: 'text', value: content.slice(lastIndex) });
+    }
+    return segments;
   }
 
   sendMessage(): void {
