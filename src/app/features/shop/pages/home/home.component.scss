@@ -134,21 +134,40 @@
 
 :host ::ng-deep .sort-control .mat-mdc-form-field-infix {
   min-height: 28px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+:host ::ng-deep .sort-control .mobile-trigger-text {
+  margin-bottom: -6px;
+}
+
+:host ::ng-deep .sort-toolbar .sort-control .mat-mdc-text-field-wrapper,
+:host ::ng-deep .sort-toolbar .sort-control .mat-mdc-form-field-flex {
+  height: 38px;
+  align-items: center;
+}
+
+:host ::ng-deep .sort-toolbar .sort-control .mat-mdc-text-field-wrapper {
+  border-radius: 999px;
+}
+
+:host ::ng-deep .sort-toolbar .sort-control .mdc-notched-outline__leading {
+  border-radius: 999px 0 0 999px;
+  min-width: 22px;
+}
+
+:host ::ng-deep .sort-toolbar .sort-control .mdc-notched-outline__trailing {
+  border-radius: 0 999px 999px 0;
+}
+
+:host ::ng-deep .sort-toolbar .sort-control .mat-mdc-form-field-subscript-wrapper {
+  display: none;
 }
 
 :host ::ng-deep .sort-control .mat-mdc-select-value-text,
 :host ::ng-deep .sort-control .mat-mdc-select-placeholder {
   font-size: 0.9rem;
-}
-
-:host ::ng-deep .sort-control .mdc-notched-outline__leading {
-  border-radius: 999px 0 0 999px;
-}
-
-:host ::ng-deep .sort-control .mdc-notched-outline__trailing {
-  border-radius: 0 999px 999px 0;
 }
 
 .cart-action {
@@ -175,8 +194,7 @@
   box-sizing: border-box;
 }
 
-button,
-{
+button {
   font: inherit;
   cursor: pointer;
 }
@@ -252,8 +270,12 @@ button,
   white-space: nowrap;
 }
 
-.mobile-sort-prefix {
-  display: none;
+.mobile-trigger-text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .hero-kicker {
@@ -565,6 +587,10 @@ button,
     gap: 0.6rem;
   }
 
+  .sort-toolbar .sort-control {
+    margin-bottom: 0;
+  }
+
   .mobile-filter-control {
     display: block;
     width: 220px;
@@ -576,7 +602,6 @@ button,
 
   .sort-toolbar-right .sort-control {
     width: min(100%, 220px);
-    margin-bottom: 0;
   }
 
   .cards-grid {
@@ -612,16 +637,17 @@ button,
 
   .sort-toolbar {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 170px));
     gap: 0.6rem;
     align-items: start;
+    justify-content: space-between;
   }
 
   .sort-toolbar-right {
     width: auto;
     margin-left: 0;
-    gap: 0.45rem;
-    justify-content: flex-end;
+    gap: 0;
+    justify-content: stretch;
   }
 
   .mobile-filter-control {
@@ -632,15 +658,12 @@ button,
     display: none;
   }
 
-  .mobile-sort-prefix {
-    display: inline;
-    margin-right: 0.35rem;
-    color: #5a7381;
-    font-weight: 500;
-  }
-
   .sort-toolbar-right .sort-control {
     width: 100%;
+  }
+
+  .mobile-trigger-text {
+    font-size: 0.82rem;
   }
 
   .cards-grid {

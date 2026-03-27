@@ -48,9 +48,6 @@ export class HomeComponent {
   readonly isAuthenticated = this.authService.isAuthenticated;
 
   readonly sortOptions = SORT_OPTIONS;
-  readonly selectedSortOptionLabelKey = computed(
-    () => this.sortOptions.find((option) => option.value === this.sortBy())?.labelKey ?? this.sortOptions[0].labelKey
-  );
 
   readonly selectedCategories = signal(new Set<string>());
   readonly searchTerm = signal('');
@@ -59,6 +56,10 @@ export class HomeComponent {
 
   readonly categories = computed(() => getProductCategories(this.products(), false));
   readonly mobileSelectedFilters = computed(() => [...this.selectedCategories()]);
+  readonly mobileSortIndex = computed(() => {
+    const index = this.sortOptions.findIndex((option) => option.value === this.sortBy());
+    return index >= 0 ? index + 1 : 1;
+  });
   readonly filterGroups = computed(() => {
     const categories = this.categories();
 

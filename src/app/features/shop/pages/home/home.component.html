@@ -67,15 +67,15 @@
         <mat-form-field appearance="outline" class="material-field sort-control mobile-filter-control">
           <mat-select
             multiple
+            panelClass="mobile-filter-panel"
             [value]="mobileSelectedFilters()"
             (selectionChange)="setMobileFilters($any($event.value))"
             [placeholder]="'shop.home.filterBy' | translate"
           >
             <mat-select-trigger>
-              {{ 'shop.home.filterBy' | translate }}
-              @if (mobileSelectedFilters().length > 0) {
-                ({{ mobileSelectedFilters().length }})
-              }
+              <span class="mobile-trigger-text">
+                {{ 'shop.home.filterBy' | translate }} ({{ mobileSelectedFilters().length }})
+              </span>
             </mat-select-trigger>
             @for (group of filterGroups(); track group.labelKey) {
               <mat-optgroup [label]="group.labelKey | translate">
@@ -90,10 +90,15 @@
         <div class="sort-toolbar-right">
           <span class="sort-label">{{ 'shop.home.sortBy' | translate }}</span>
           <mat-form-field appearance="outline" class="material-field sort-control">
-            <mat-select [value]="sortBy()" (selectionChange)="setSort($any($event.value))">
+            <mat-select
+              [value]="sortBy()"
+              (selectionChange)="setSort($any($event.value))"
+              [placeholder]="'shop.home.sortBy' | translate"
+            >
               <mat-select-trigger>
-                <span class="mobile-sort-prefix">{{ 'shop.home.sortBy' | translate }}</span>
-                {{ selectedSortOptionLabelKey() | translate }}
+                <span class="mobile-trigger-text">
+                  {{ 'shop.home.sortBy' | translate }} ({{ mobileSortIndex() }})
+                </span>
               </mat-select-trigger>
               @for (option of sortOptions; track option.value) {
                 <mat-option [value]="option.value">{{ option.labelKey | translate }}</mat-option>
